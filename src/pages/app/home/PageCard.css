@@ -37,14 +37,16 @@
 .home-pagecard::before {
   content: '';
   position: absolute;
-  right: -10px;
-  top: -18px;
+  top: var(--dot-top);
+  bottom: var(--dot-bottom);
+  left: var(--dot-left);
+  right: var(--dot-right);
+  transform: var(--dot-transform);
   width: 36px;
   height: 36px;
   border-radius: 50%;
   background: linear-gradient(180deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.06));
   opacity: 1;
-  transform: translateZ(0);
   transition: opacity 360ms ease;
 }
 
