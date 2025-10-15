@@ -1,0 +1,127 @@
+:root {
+  --bg-1: #071226;
+  --bg-2: #041018;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --muted: rgba(255, 255, 255, 0.7);
+  --muted-2: rgba(255, 255, 255, 0.55);
+  --accent: #f9a8d4;
+
+  --pink-1: oklch(0.94 0.04 307.3);
+  --violet-1: oklch(0.87 0.07 296.1);
+  --violet-2: oklch(0.94 0.03 309.04);
+  --violet-3: #7c4dff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(800px 300px at 10% 10%, rgba(255, 255, 255, 0.03), transparent 8%),
+    radial-gradient(700px 250px at 90% 90%, rgba(255, 255, 255, 0.02), transparent 8%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.text-gradient-violet {
+  background: linear-gradient(90deg, #9041f7, #7f50ff, #7f50ff, #9041f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/*
+
+*/
+
+.default-loading-state,
+.default-error-state,
+.default-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+  color: var(--muted);
+  text-align: center;
+}
+
+.default-retry-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.default-retry-button:hover {
+  background-color: #0056b3;
+}
+
+/* Animations */
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.1);
+  }
+  28% {
+    transform: scale(1.2);
+  }
+  42% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  85% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}

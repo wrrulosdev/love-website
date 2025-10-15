@@ -1,0 +1,17 @@
+.home-footer {
+  display: flex;
+  gap: 6px;
+  color: #000;
+  background-color: var(--violet-2);
+  border: 2px solid var(--violet-1);
+  border-radius: 2rem;
+  padding: 1rem 2rem;
+  align-items: center;
+  max-width: fit-content;
+  font-weight: 600;
+}
+
+.home-footer-heart {
+  color: var(--violet-3);
+  fill: var(--violet-3);
+}

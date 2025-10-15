@@ -1,0 +1,286 @@
+:root {
+  --bg-1: #fbf8ff;
+  --bg-2: #f3f0ff;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(124, 77, 255, 0.12);
+  --accent: #7c4dff;
+  --accent-2: #9a79ff;
+  --text: #1e0f3a;
+  --muted: #63558e;
+  --muted-2: #927fbd;
+  --shadow: rgba(124, 77, 255, 0.12);
+}
+
+.app-layout {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 10% 10%, var(--bg-2), transparent 20%),
+    radial-gradient(1000px 500px at 90% 90%, #fff, transparent 10%),
+    linear-gradient(180deg, var(--bg-1), #ffffff 60%);
+}
+
+.app-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.sp-decor-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sp-decor {
+  position: absolute;
+  color: var(--accent-2);
+  opacity: 0.16;
+  font-size: 2.5rem;
+  transform-origin: center;
+  animation: sp-float 6s ease-in-out infinite;
+}
+
+@keyframes sp-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes sp-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.16;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.22;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.16;
+  }
+}
+
+@keyframes sp-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sp-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.sp-large {
+  font-size: 3.5rem;
+  opacity: 0.18;
+}
+
+.sp-medium {
+  font-size: 2.5rem;
+  opacity: 0.16;
+}
+
+.sp-small {
+  font-size: 1.8rem;
+  opacity: 0.14;
+}
+
+.sp-tiny {
+  font-size: 1.2rem;
+  opacity: 0.12;
+}
+
+.sp-pulse {
+  animation: sp-pulse 4s ease-in-out infinite;
+}
+
+.sp-rotate {
+  animation: sp-rotate 8s linear infinite;
+}
+
+.sp-bounce {
+  animation: sp-bounce 3s ease-in-out infinite;
+}
+
+.sp-dog {
+  top: 8%;
+  left: 5%;
+}
+.sp-cat {
+  top: 12%;
+  right: 8%;
+}
+.sp-rabbit {
+  top: 6%;
+  left: 15%;
+}
+.sp-hamster {
+  top: 10%;
+  right: 15%;
+}
+
+.sp-heart-large {
+  top: 20%;
+  left: 10%;
+}
+.sp-couple {
+  top: 25%;
+  right: 12%;
+}
+.sp-laptop {
+  top: 22%;
+  left: 20%;
+}
+.sp-code {
+  top: 18%;
+  right: 22%;
+}
+
+.sp-birds {
+  top: 40%;
+  left: 8%;
+}
+.sp-love {
+  top: 45%;
+  right: 10%;
+}
+.sp-bug {
+  top: 42%;
+  left: 25%;
+}
+.sp-terminal {
+  top: 38%;
+  right: 25%;
+}
+
+.sp-paw {
+  top: 60%;
+  left: 12%;
+}
+.sp-ring {
+  top: 65%;
+  right: 8%;
+}
+.sp-server {
+  top: 62%;
+  left: 22%;
+}
+.sp-git {
+  top: 58%;
+  right: 20%;
+}
+
+.sp-turtle {
+  bottom: 10%;
+  left: 7%;
+}
+.sp-fish {
+  bottom: 8%;
+  right: 5%;
+}
+.sp-keyboard {
+  bottom: 12%;
+  left: 18%;
+}
+.sp-mobile {
+  bottom: 6%;
+  right: 15%;
+}
+
+.sp-sparkle-1 {
+  top: 15%;
+  left: 30%;
+  font-size: 1.4rem;
+  opacity: 0.25;
+}
+.sp-sparkle-2 {
+  top: 35%;
+  left: 35%;
+  font-size: 1.3rem;
+  opacity: 0.22;
+}
+.sp-sparkle-3 {
+  top: 55%;
+  left: 40%;
+  font-size: 1.5rem;
+  opacity: 0.28;
+}
+.sp-sparkle-4 {
+  top: 75%;
+  left: 45%;
+  font-size: 1.2rem;
+  opacity: 0.2;
+}
+
+.sp-star-1 {
+  top: 20%;
+  right: 35%;
+  font-size: 1.6rem;
+  opacity: 0.24;
+}
+.sp-star-2 {
+  top: 40%;
+  right: 40%;
+  font-size: 1.4rem;
+  opacity: 0.22;
+}
+.sp-star-3 {
+  top: 60%;
+  right: 45%;
+  font-size: 1.7rem;
+  opacity: 0.26;
+}
+.sp-star-4 {
+  top: 80%;
+  right: 50%;
+  font-size: 1.3rem;
+  opacity: 0.18;
+}
+
+.sp-rotate-special-1 {
+  top: 30%;
+  left: 45%;
+  animation-duration: 12s;
+}
+.sp-rotate-special-2 {
+  top: 50%;
+  right: 35%;
+  animation-duration: 15s;
+}
+
+.sp-bounce-special-1 {
+  top: 25%;
+  left: 38%;
+  animation-duration: 2.5s;
+}
+.sp-bounce-special-2 {
+  top: 45%;
+  right: 38%;
+  animation-duration: 3s;
+}
+.sp-bounce-special-3 {
+  top: 70%;
+  left: 42%;
+  animation-duration: 2.8s;
+}

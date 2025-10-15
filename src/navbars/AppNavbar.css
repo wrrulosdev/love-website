@@ -1,0 +1,54 @@
+.app-navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: #ffffff;
+  padding: 8px 16px;
+  border-radius: 28px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.app-navbar.hidden {
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #000;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.nav-item:hover {
+  background-color: var(--violet-3);
+}
+
+.nav-item:hover svg {
+  transform: scale(1.15);
+  transition: transform 0.3s ease;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.nav-item.active {
+  background: var(--violet-3);
+  color: white;
+}

@@ -1,0 +1,336 @@
+.book-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.book-page.hidden {
+  opacity: 0;
+}
+
+.book-page.no-content {
+  margin-top: 10rem;
+}
+
+.book {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: var(--violet-2);
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px rgba(18, 18, 18, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  max-width: 980px;
+  width: 100%;
+  height: 70vh;
+  transition: all 0.3s ease;
+  margin-top: 5rem;
+  position: relative;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, transparent 5%),
+    linear-gradient(to left, rgba(0, 0, 0, 0.2) 0%, transparent 5%);
+}
+
+.book.single {
+  max-width: 480px;
+}
+
+.book.two-up {
+  max-width: 980px;
+}
+
+.book-side {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.book-side::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.08) 20%,
+    rgba(0, 0, 0, 0.08) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.book-side.left::after {
+  right: 0;
+}
+
+.book-side.right::after {
+  left: 0;
+}
+
+.book-separator {
+  display: none;
+}
+
+.book-side.left::before,
+.book-side.right::before {
+  content: '';
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    4px 0 0 rgba(0, 0, 0, 0.06),
+    8px 0 0 rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+  border-radius: 1px;
+  z-index: 5;
+}
+
+.book-side.left::before {
+  left: -2px;
+}
+
+.book-side.right::before {
+  right: 10px;
+}
+
+.book.animating .book-side {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.book.animating {
+  transform: translateY(-2px);
+  box-shadow:
+    0 15px 40px rgba(18, 18, 18, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 768px) {
+  .book-separator {
+    display: block;
+    width: 2px;
+    margin: 8px 12px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.15), transparent);
+    border-radius: 1px;
+    align-self: stretch;
+    pointer-events: none;
+    position: relative;
+    z-index: 3;
+    box-shadow:
+      inset -1px 0 1px rgba(255, 255, 255, 0.8),
+      1px 0 1px rgba(0, 0, 0, 0.1);
+  }
+
+  .book.two-up::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    width: 4px;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    border-radius: 2px;
+    z-index: 2;
+  }
+}
+
+.book-controls {
+  width: 100%;
+  max-width: 980px;
+  margin: 16px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 0 12px;
+}
+
+.book-controls::before {
+  content: '';
+  position: absolute;
+  top: -28px;
+  left: 0;
+  right: 0;
+  height: 56px;
+  pointer-events: none;
+  background: radial-gradient(40% 40% at 50% 0, rgba(124, 77, 255, 0.06), transparent 40%);
+  filter: blur(10px);
+  opacity: 0.9;
+}
+
+.mobile-nav-buttons {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 6px;
+  box-sizing: border-box;
+}
+
+.text-nav-button {
+  background: #fff;
+  border: 1px solid rgba(124, 77, 255, 0.14);
+  color: #111;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(124, 77, 255, 0.06);
+  transition:
+    transform 0.12s ease,
+    background-color 0.12s ease,
+    box-shadow 0.12s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-nav-button:hover {
+  transform: translateY(-3px);
+  background-color: rgba(124, 77, 255, 0.03);
+  box-shadow: 0 8px 22px rgba(124, 77, 255, 0.08);
+}
+
+.text-nav-button:active {
+  transform: translateY(-1px);
+  transition: transform 0.1s ease;
+}
+
+.pagination-dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 4rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 6px 8px;
+  z-index: 4;
+}
+
+.pagination-dots::-webkit-scrollbar {
+  display: none;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.14);
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+  position: relative;
+}
+
+.dot:hover {
+  transform: scale(1.18);
+}
+
+.dot.active {
+  width: 12px;
+  height: 12px;
+  background: var(--violet-3);
+  box-shadow: 0 8px 18px rgba(124, 77, 255, 0.16);
+}
+
+.book-caption {
+  font-size: 0.95rem;
+  color: #2f2f2f;
+  text-align: center;
+  max-width: 760px;
+  padding: 0 12px;
+  font-style: italic;
+  margin-bottom: 8px;
+  transition: opacity 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .book-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 980px;
+    margin: 8px auto 0;
+  }
+
+  .pagination-dots {
+    gap: 14px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+  }
+
+  .dot.active {
+    width: 14px;
+    height: 14px;
+  }
+
+  .book {
+    min-height: 72vh;
+    padding: 18px;
+    box-shadow:
+      0 15px 40px rgba(18, 18, 18, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  }
+
+  .book.two-up .book-side {
+    padding: 24px;
+  }
+
+  .mobile-nav-buttons {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-controls {
+    gap: 6px;
+  }
+
+  .book-caption {
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  .book {
+    margin-top: 3rem;
+    height: 70vh;
+  }
+}
+
+@media (min-width: 480px) {
+  .pagination-dots {
+    margin: 0;
+  }
+}

@@ -1,0 +1,108 @@
+.book-imagecard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  background: var(--violet-2);
+  border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.book-imagecard img {
+  width: 100%;
+  min-height: 65%;
+  max-height: 65%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  background: var(--violet-2);
+}
+
+.book-imagecard h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 6px 0 2px;
+  color: #1f1f1f;
+}
+
+.book-imagecard span {
+  font-size: 0.85rem;
+  color: var(--violet-3);
+}
+
+.book-imagecard p {
+  font-size: 0.85rem;
+  color: #444;
+  flex: 1;
+  min-height: 60px;
+  max-height: 100px;
+  overflow-y: auto;
+  padding-right: 4px;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+.book-imagecard p::-webkit-scrollbar {
+  width: 6px;
+}
+
+.book-imagecard p::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.book-imagecard p::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (min-width: 480px) {
+  .book-imagecard img {
+    min-height: 70%;
+    max-height: 70%;
+  }
+
+  .book-imagecard h2 {
+    font-size: 1.5rem;
+  }
+
+  .book-imagecard span {
+    font-size: 0.9rem;
+  }
+
+  .book-imagecard p {
+    font-size: 0.9rem;
+    max-height: 120px;
+  }
+}
+
+@media (min-width: 768px) {
+  .book-imagecard {
+    align-items: start;
+    text-align: start;
+  }
+
+  .book-imagecard h2 {
+    font-size: 1.3rem;
+  }
+
+  .book-imagecard span {
+    font-size: 0.95rem;
+  }
+
+  .book-imagecard p {
+    font-size: 0.95rem;
+    max-height: 140px;
+  }
+
+  .book-imagecard img {
+    min-height: 70%;
+    max-height: 70%;
+  }
+}

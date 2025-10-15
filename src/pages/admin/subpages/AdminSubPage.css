@@ -1,0 +1,75 @@
+.admin-header {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--card-border);
+  backdrop-filter: blur(12px);
+}
+
+.admin-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.admin-header-content button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.admin-header-content button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--violet-3);
+  color: black;
+}
+
+.admin-header-content div h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--violet-3), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-header-content div p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@media (min-width: 768px) {
+  .admin-header-content {
+    padding: 1.5rem 2rem;
+  }
+
+  .admin-header-content button {
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-header-content div h1 {
+    font-size: 1.4rem;
+  }
+
+  .admin-header-content div p {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-header-content div h1 {
+    font-size: 1.6rem;
+  }
+}

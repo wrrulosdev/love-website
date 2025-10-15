@@ -1,0 +1,71 @@
+.api-error {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.api-error-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  max-width: 480px;
+  margin: 0 1rem;
+}
+
+.api-error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.api-error-title {
+  font-size: 1.6rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+  color: var(--violet-3);
+}
+
+.api-error-message {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.api-error-details {
+  font-size: 0.85rem;
+  color: var(--muted-2);
+  margin-bottom: 1.5rem;
+  word-break: break-word;
+}
+
+.api-error-retry {
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.15s ease;
+}
+
+.api-error-retry:hover {
+  background: var(--violet-3);
+}
+
+.api-error-retry:active {
+  transform: scale(0.96);
+}
