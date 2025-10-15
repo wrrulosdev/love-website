@@ -200,7 +200,7 @@ const BookPage: React.FC = () => {
           </button>
         </div>
       ) : (
-        <div>
+        <>
           <div className={`book ${twoUp ? 'two-up' : 'single'} ${isAnimating ? 'animating' : ''}`}>
             <div className="book-side left">
               {currentLeftCard ? (
@@ -282,7 +282,7 @@ const BookPage: React.FC = () => {
               </em>
             </div>
           </div>
-        </div>
+        </>
       )}
     </section>
   );
