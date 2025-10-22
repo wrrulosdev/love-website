@@ -9,7 +9,7 @@ import { fetchPhotosApi, updatePhotoApi, deletePhotoApi } from '../../../service
 const EditImagesPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const [images, setImages] = useState<Photo[]>([]);
+  const [, setImages] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,8 +44,8 @@ const EditImagesPage: React.FC = () => {
       const data = await fetchPhotosApi();
       setImages(data);
       setModalImages(data);
-    } catch (err: any) {
-      setError(err?.message || 'Error al cargar las imágenes');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al cargar las imágenes');
     } finally {
       setLoading(false);
     }
@@ -144,8 +144,8 @@ const EditImagesPage: React.FC = () => {
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
-    } catch (err: any) {
-      setActionError(err?.message || 'Error al actualizar la imagen');
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : 'Error al actualizar la imagen');
     } finally {
       setSaving(false);
     }
@@ -175,8 +175,8 @@ const EditImagesPage: React.FC = () => {
       setLocation('');
       setShowInBook(false);
       setShowInTimeline(false);
-    } catch (err: any) {
-      setActionError(err?.message || 'Error al eliminar la imagen');
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : 'Error al eliminar la imagen');
     } finally {
       setDeleting(false);
     }
