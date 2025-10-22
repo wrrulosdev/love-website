@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './cardsPage.css';
 import { MailIcon, XIcon, CalendarIcon, UserIcon } from 'lucide-react';
 import { useLoading } from '../../../context/LoadingContext';
+import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 
 interface Card {
   id: string;
@@ -69,6 +70,7 @@ const CardsPage: React.FC = () => {
       setError(null);
       const data = await fetchcardsApi();
       setcards(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err?.message || 'Error al cargar las cartas');
     } finally {
@@ -88,9 +90,20 @@ const CardsPage: React.FC = () => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closecard();
     };
+
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  if (error) {
+    return (
+      <ApiErrorState
+        error={error}
+        onRetry={() => loadcards()}
+        message="No pudimos cargar las imágenes."
+      />
+    );
+  }
 
   return (
     <section className="cards-page">
@@ -101,7 +114,7 @@ const CardsPage: React.FC = () => {
               <MailIcon size={64} />
               <h3>No hay cartas disponibles</h3>
               <p>Aún no se han escrito mensajes en este universo</p>
-              <button className="default-retry-button" onClick={() => refetch().catch(() => {})}>
+              <button className="default-retry-button" onClick={() => loadcards()}>
                 Reintentar
               </button>
             </div>

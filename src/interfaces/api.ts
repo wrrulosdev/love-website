@@ -1,21 +1,30 @@
-export type ApiPhoto = {
-  location: undefined;
+export type Photo = {
+  location: string;
   id: number;
-  title: string | null;
-  description: string | null;
-  date: string | null;
+  title: string;
+  description: string;
+  date: string;
   category: string;
   in_book: boolean;
   in_timeline: boolean;
-  created_at: string | null;
-  updated_at: string | null;
+  created_at: string;
+  updated_at: string;
   image_url: string;
 };
 
-export type ApiResponse = {
+export type Card = {
+  id: number;
+  title: string;
+  content: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+  card_date: string;
+  author: string;
+};
+
+export type ApiResponse<T> = {
   status: string;
-  title?: string;
-  data?: {
-    photos?: ApiPhoto[];
-  };
+  title: string;
+  data?: T;
 };

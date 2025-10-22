@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { FilterOption, Photo } from '../interfaces/photo';
+import type { FilterOption } from '../interfaces/photo';
+import type { Photo } from '../interfaces/api';
 import { getBookImagesApi, getPhotosApi, getTimelineImagesApi } from '../services/photosApi';
 
 export type PhotosSource = 'images' | 'book' | 'timeline';

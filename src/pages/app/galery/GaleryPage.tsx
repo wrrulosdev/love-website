@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import './GaleryPage.css';
-import type { FilterOption, Photo } from '../../../interfaces/photo';
+import type { FilterOption } from '../../../interfaces/photo';
 import { useVirtualGrid } from '../../../hooks/useVirtualGrid';
 import { usePhotos } from '../../../hooks/usePhotos';
 import PhotoItem from './PhotoItem';
+import type { Photo } from '../../../interfaces/api';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { ImagesIcon } from 'lucide-react';
@@ -106,7 +107,7 @@ const GaleryPage: React.FC = () => {
       }
 
       const img = new Image();
-      img.src = photo.full;
+      img.src = photo.image_url;
       const set = () => setSelected(photo);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -248,7 +249,7 @@ const GaleryPage: React.FC = () => {
             </div>
 
             <div className="galery-page-lightbox-inner">
-              <img src={selected.full} alt={selected.title || `Large photo ${selected.id}`} />
+              <img src={selected.image_url} alt={selected.title || `Large photo ${selected.id}`} />
             </div>
 
             <div

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './EditImagesPage.css';
 import './AdminSubPage.css';
 import { Trash2Icon, SaveIcon, XIcon, ImageIcon } from 'lucide-react';
-import type { Photo } from '../../../interfaces/photo';
+import type { Photo } from '../../../interfaces/api';
 import { fetchPhotosApi, updatePhotoApi, deletePhotoApi } from '../../../services/photosApi';
 
 const EditImagesPage: React.FC = () => {
@@ -261,7 +261,7 @@ const EditImagesPage: React.FC = () => {
 
                   <div className="edit-images-current-image">
                     <img
-                      src={selectedImage.full}
+                      src={selectedImage.image_url}
                       alt={selectedImage.title || 'Imagen seleccionada'}
                     />
                     <div className="edit-images-image-info">
@@ -466,7 +466,7 @@ const EditImagesPage: React.FC = () => {
                       onClick={() => handleSelectImage(image)}
                     >
                       <div className="edit-images-modal-thumbnail">
-                        <img src={image.thumb} alt={image.title || `Imagen ${image.id}`} />
+                        <img src={image.image_url} alt={image.title || `Imagen ${image.id}`} />
                         <div className="edit-images-modal-overlay-info">
                           <span className="edit-images-modal-category">{image.category}</span>
                           {image.in_book && <span className="edit-images-modal-book">📖</span>}

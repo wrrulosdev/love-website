@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Photo } from '../../../interfaces/photo';
+import type { Photo } from '../../../interfaces/api';
 
 export default React.memo(function PhotoItem({
   photo,
@@ -28,7 +28,7 @@ export default React.memo(function PhotoItem({
         aria-label={`Abrir imagen ${photo.title || photo.id}`}
       >
         <img
-          src={photo.thumb}
+          src={photo.image_url}
           alt={photo.title ? `Foto ${photo.title}` : `Foto ${photo.id}`}
           loading="lazy"
           decoding="async"

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Photo } from '../interfaces/photo';
+import type { Photo } from '../interfaces/api';
 
 export function useVirtualGrid() {
   const gridRef = useRef<HTMLDivElement | null>(null);

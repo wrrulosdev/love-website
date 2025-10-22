@@ -3,7 +3,7 @@ import './TimelinePage.css';
 import { usePhotos } from '../../../hooks/usePhotos';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
-import type { Photo } from '../../../interfaces/photo';
+import type { Photo } from '../../../interfaces/api';
 
 const TimelinePage: React.FC = () => {
   const { show, hide } = useLoading();
@@ -65,12 +65,12 @@ const TimelinePage: React.FC = () => {
                 <h3 className="timeline-event-title">{event.title}</h3>
                 <p className="timeline-event-description">{event.description}</p>
 
-                {event.full && (
+                {event.image_url && (
                   <div
                     className="timeline-event-image"
-                    onClick={() => handleImageClick(event.full)}
+                    onClick={() => handleImageClick(event.image_url)}
                   >
-                    <img src={event.full} alt={event.title} className="timeline-event-img" />
+                    <img src={event.image_url} alt={event.title} className="timeline-event-img" />
                     <div className="timeline-event-image-overlay">
                       <span className="timeline-event-image-icon">🔍</span>
                     </div>

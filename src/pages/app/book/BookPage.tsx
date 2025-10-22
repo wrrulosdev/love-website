@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './BookPage.css';
 import ImageCard, { type ImageCardProps } from './ImageCard';
 import { usePhotos } from '../../../hooks/usePhotos';
-import type { Photo } from '../../../interfaces/photo';
+import type { Photo } from '../../../interfaces/api';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { BookIcon } from 'lucide-react';
@@ -157,7 +157,7 @@ const BookPage: React.FC = () => {
     const p: Photo | undefined = photos[leftIndex];
     if (!p) return null;
     return {
-      imageUrl: p.full,
+      imageUrl: p.image_url,
       title: p.title ?? undefined,
       description: p.description ?? undefined,
       date: p.date ?? undefined,
@@ -169,7 +169,7 @@ const BookPage: React.FC = () => {
     const p: Photo | undefined = photos[rightIndex];
     if (!p) return null;
     return {
-      imageUrl: p.full,
+      imageUrl: p.image_url,
       title: p.title ?? undefined,
       description: p.description ?? undefined,
       date: p.date ?? undefined,
