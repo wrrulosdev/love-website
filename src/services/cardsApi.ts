@@ -22,3 +22,7 @@ async function fetchCards(
 export async function getCards(signal?: AbortSignal) {
   return fetchCards('/cards/get_cards', undefined, signal);
 }
+
+export async function uploadCardApi() {
+  return;
+}

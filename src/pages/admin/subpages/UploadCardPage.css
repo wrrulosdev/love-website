@@ -1,0 +1,327 @@
+.upload-card-page {
+  min-height: 100vh;
+}
+
+.upload-card-main {
+  padding: 1.5rem 1rem;
+}
+
+.upload-card-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.upload-card-form {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+.upload-card-form-section {
+  margin-bottom: 1.5rem;
+}
+
+.upload-card-form-section label {
+  display: block;
+  cursor: pointer;
+}
+
+.upload-card-form-section label input {
+  display: none;
+}
+
+.upload-card-upload-area {
+  border: 2px dashed var(--card-border);
+  border-radius: 0.875rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.upload-card-upload-area:hover {
+  border-color: var(--violet-3);
+  background: rgba(124, 77, 255, 0.05);
+}
+
+.upload-card-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 2.5rem 1.25rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.upload-card-placeholder svg {
+  color: var(--muted-2);
+}
+
+.upload-card-placeholder span:first-of-type {
+  font-size: 0.938rem;
+  font-weight: 500;
+}
+
+.upload-card-hint {
+  font-size: 0.813rem;
+  color: var(--muted-2);
+}
+
+.upload-card-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.upload-card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-card-change-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  font-size: 0.875rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.upload-card-preview:hover .upload-card-change-image {
+  opacity: 1;
+}
+
+.upload-card-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.upload-card-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.upload-card-full-width {
+  grid-column: 1 / -1;
+}
+
+.upload-card-form-group label {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.upload-card-form-group input,
+.upload-card-form-group textarea {
+  width: 100%;
+  padding: 0.813rem 0.938rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 0.625rem;
+  color: var(--muted);
+  font-size: 0.938rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.upload-card-form-group input::placeholder,
+.upload-card-form-group textarea::placeholder {
+  color: var(--muted-2);
+}
+
+.upload-card-form-group input:focus,
+.upload-card-form-group textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--violet-3);
+  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1);
+}
+
+.upload-card-form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.upload-card-message {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.upload-card-error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.upload-card-success-message {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+}
+
+.upload-card-message svg {
+  flex-shrink: 0;
+}
+
+.upload-card-submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.938rem;
+  background: linear-gradient(135deg, var(--violet-3), var(--accent));
+  color: white;
+  font-size: 0.938rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-card-submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(124, 77, 255, 0.4);
+}
+
+.upload-card-submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.upload-card-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.upload-card-loading-spinner {
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: upload-card-spin 0.8s linear infinite;
+}
+
+@keyframes upload-card-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .upload-card-main {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .upload-card-form {
+    padding: 2rem;
+    border-radius: 1.25rem;
+  }
+
+  .upload-card-form-section {
+    margin-bottom: 2rem;
+  }
+
+  .upload-card-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-card-placeholder {
+    padding: 3.5rem 1.75rem;
+    gap: 0.75rem;
+  }
+
+  .upload-card-placeholder span:first-of-type {
+    font-size: 1rem;
+  }
+
+  .upload-card-hint {
+    font-size: 0.875rem;
+  }
+
+  .upload-card-preview {
+    aspect-ratio: 16 / 9;
+  }
+
+  .upload-card-change-image {
+    padding: 1rem;
+    font-size: 0.938rem;
+  }
+
+  .upload-card-form-group label {
+    font-size: 0.938rem;
+  }
+
+  .upload-card-form-group input,
+  .upload-card-form-group textarea {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .upload-card-form-group textarea {
+    min-height: 160px;
+  }
+
+  .upload-card-message {
+    padding: 1rem;
+    font-size: 0.938rem;
+    border-radius: 0.75rem;
+  }
+
+  .upload-card-submit-button {
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .upload-card-loading-spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .upload-card-main {
+    padding: 3rem 2rem;
+  }
+
+  .upload-card-form {
+    padding: 2.5rem;
+  }
+
+  .upload-card-placeholder {
+    padding: 4rem 2rem;
+  }
+
+  .upload-card-preview {
+    aspect-ratio: 21 / 9;
+  }
+
+  .upload-card-form-group textarea {
+    min-height: 180px;
+  }
+}

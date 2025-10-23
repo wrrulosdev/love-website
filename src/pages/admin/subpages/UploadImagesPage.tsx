@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './UploadImagesPage.css';
-import './AdminSubPage.css';
 import { EditIcon, ImageIcon } from 'lucide-react';
 import { uploadImageApi } from '../../../services/photosApi';
+import './UploadImagesPage.css';
+import './AdminSubPage.css';
 
 const UploadImagesPage: React.FC = () => {
   const navigate = useNavigate();
