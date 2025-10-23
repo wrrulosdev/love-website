@@ -191,7 +191,7 @@ const GaleryPage: React.FC = () => {
         <div className="default-empty-state">
           <ImagesIcon size={64} />
           <h3>No hay imágenes disponibles</h3>
-          <p>Aún no se han escrito mensajes en este universo</p>
+          <p>Aún no se han subido imagenes en este universo</p>
           <button className="default-retry-button" onClick={() => refetch().catch(() => {})}>
             Reintentar
           </button>
