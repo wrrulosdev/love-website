@@ -15,6 +15,7 @@ import EditImagesPage from './pages/admin/subpages/EditImagesPage';
 import LayoutNoNavbar from './layout/LayoutNoNavbar';
 import TimelinePage from './pages/app/timeline/TimeLinePage';
 import CardsPage from './pages/app/cards/CardsPage';
+import UploadCardPage from './pages/admin/subpages/UploadCardPage';
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,15 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [{ index: true, element: <EditImagesPage /> }],
+  },
+  {
+    path: '/admin/upload-card',
+    element: (
+      <ProtectedRoute>
+        <LayoutNoNavbar />
+      </ProtectedRoute>
+    ),
+    children: [{ index: true, element: <UploadCardPage /> }],
   },
 ]);
 
