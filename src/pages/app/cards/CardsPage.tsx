@@ -1,54 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './cardsPage.css';
 import { MailIcon, XIcon, CalendarIcon, UserIcon } from 'lucide-react';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
-
-interface Card {
-  id: string;
-  title: string;
-  date: string;
-  content: string;
-  author: string;
-  imageUrl?: string;
-}
-
-const fetchcardsApi = async (): Promise<Card[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
-  return [
-    {
-      id: '1',
-      title: 'Ejemplo',
-      date: '2025-10-02',
-      content: 'Ejemplo',
-      author: 'Pedro',
-      imageUrl: 'https://images.pedroysofia.com/images/IMG_20250402_200622.jpg',
-    },
-    {
-      id: '2',
-      title: 'Ejemplo',
-      date: '2025-10-04',
-      content: 'Ejemplo',
-      author: 'Pedro',
-      imageUrl: 'https://images.pedroysofia.com/images/IMG_20250402_200622.jpg',
-    },
-    {
-      id: '3',
-      title: 'Ejemplo',
-      date: '2025-10-05',
-      content: 'Ejemplo',
-      author: 'Pedro',
-      imageUrl: 'https://images.pedroysofia.com/images/IMG_20250402_200622.jpg0',
-    },
-  ];
-};
+import { useCards } from '../../../hooks/useCards';
+import type { Card } from '../../../interfaces/api';
+import './CardsPage.css';
 
 const CardsPage: React.FC = () => {
   const { show, hide } = useLoading();
-  const [cards, setcards] = useState<Card[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { cards, loading, error, refetch } = useCards();
   const [selectedcard, setSelectedcard] = useState<Card | null>(null);
   const photos = [1];
 
@@ -59,24 +19,6 @@ const CardsPage: React.FC = () => {
       hide();
     }
   }, [loading, show, hide]);
-
-  useEffect(() => {
-    loadcards();
-  }, []);
-
-  const loadcards = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchcardsApi();
-      setcards(data);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(err?.message || 'Error al cargar las cartas');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const opencard = (card: Card) => {
     setSelectedcard(card);
@@ -99,8 +41,8 @@ const CardsPage: React.FC = () => {
     return (
       <ApiErrorState
         error={error}
-        onRetry={() => loadcards()}
-        message="No pudimos cargar las imágenes."
+        onRetry={() => refetch().catch(() => {})}
+        message="No se pudieron cargar las cartas."
       />
     );
   }
@@ -114,7 +56,7 @@ const CardsPage: React.FC = () => {
               <MailIcon size={64} />
               <h3>No hay cartas disponibles</h3>
               <p>Aún no se han escrito mensajes en este universo</p>
-              <button className="default-retry-button" onClick={() => loadcards()}>
+              <button className="default-retry-button" onClick={() => refetch().catch(() => {})}>
                 Reintentar
               </button>
             </div>
@@ -136,7 +78,7 @@ const CardsPage: React.FC = () => {
                       <div className="cards-page-card-info">
                         <span>
                           <CalendarIcon size={14} />
-                          {new Date(card.date).toLocaleDateString('es-ES', {
+                          {new Date(card.card_date).toLocaleDateString('es-ES', {
                             day: 'numeric',
                             month: 'long',
                             year: 'numeric',
@@ -191,9 +133,9 @@ const CardsPage: React.FC = () => {
             </button>
 
             <div className="cards-page-modal-inner">
-              {selectedcard.imageUrl && (
+              {selectedcard.image_url && (
                 <div className="cards-page-modal-image">
-                  <img src={selectedcard.imageUrl} alt={selectedcard.title} />
+                  <img src={selectedcard.image_url} alt={selectedcard.title} />
                 </div>
               )}
 
@@ -206,7 +148,7 @@ const CardsPage: React.FC = () => {
                   <div className="cards-page-modal-meta">
                     <span>
                       <CalendarIcon size={16} />
-                      {new Date(selectedcard.date).toLocaleDateString('es-ES', {
+                      {new Date(selectedcard.card_date).toLocaleDateString('es-ES', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',

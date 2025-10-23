@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Home,
-  Star,
   ImageIcon,
   ClockIcon,
   MailIcon,
@@ -14,8 +13,9 @@ import './AppNavbar.css';
 
 type NavItem = {
   name: string;
-  path: string;
+  path?: string;
   icon: React.ReactNode;
+  external?: boolean;
 };
 
 const navItems: NavItem[] = [
@@ -25,7 +25,12 @@ const navItems: NavItem[] = [
   { name: 'Timeline', path: '/timeline', icon: <ClockIcon size={24} /> },
   { name: 'Cartas', path: '/cards', icon: <MailIcon size={24} /> },
   { name: 'Admin', path: '/admin', icon: <SettingsIcon size={24} /> },
-  { name: 'Github', path: '/github', icon: <GithubIcon size={24} /> },
+  {
+    name: 'Github',
+    icon: <GithubIcon size={24} />,
+    external: true,
+    path: 'https://github.com/wrrulosdev/love-website',
+  },
 ];
 
 const AppNavbar: React.FC = () => {
@@ -51,15 +56,29 @@ const AppNavbar: React.FC = () => {
 
   return (
     <nav className={`app-navbar ${hidden ? 'hidden' : ''}`}>
-      {navItems.map((item) => (
-        <NavLink
-          key={item.path}
-          to={item.path}
-          className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-        >
-          {item.icon}
-        </NavLink>
-      ))}
+      {navItems.map((item) =>
+        item.external ? (
+          <a
+            key={item.name}
+            href={item.path}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-item"
+            title={item.name}
+          >
+            {item.icon}
+          </a>
+        ) : (
+          <NavLink
+            key={item.path}
+            to={item.path!}
+            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            title={item.name}
+          >
+            {item.icon}
+          </NavLink>
+        )
+      )}
     </nav>
   );
 };

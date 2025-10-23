@@ -5,6 +5,9 @@ import { getBookImagesApi, getPhotosApi, getTimelineImagesApi } from '../service
 
 export type PhotosSource = 'images' | 'book' | 'timeline';
 
+/**
+ * Hook to handle Photos loading, status, and errors.
+ */
 export function usePhotos(
   initialCategory: FilterOption = 'Todas',
   initialSource: PhotosSource = 'images'

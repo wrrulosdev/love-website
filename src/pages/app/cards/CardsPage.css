@@ -55,6 +55,7 @@
 .cards-page-main {
   padding: 2rem 1rem;
   min-height: calc(100vh - 200px);
+  margin-top: 2rem;
 }
 
 .cards-page-container {
@@ -94,50 +95,16 @@
   }
 }
 
-.cards-page-error-state svg {
-  color: #fca5a5;
-}
-
-.cards-page-empty-state svg {
-  color: var(--muted-2);
-}
-
-.cards-page-empty-state h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: white;
-}
-
-.cards-page-empty-state p {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.cards-page-retry-button {
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, var(--violet-3), var(--accent));
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.cards-page-retry-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(124, 77, 255, 0.4);
-}
-
 .cards-page-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
+  align-items: stretch;
 }
 
 .cards-page-card {
+  display: flex;
+  flex-direction: column;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 1.25rem;
@@ -147,6 +114,7 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   transform: translateY(20px);
+  height: 100%;
 }
 
 .cards-page-card-visible {
@@ -199,7 +167,7 @@
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -225,6 +193,7 @@
   background: rgba(255, 255, 255, 0.02);
   border-left: 3px solid var(--violet-3);
   border-radius: 0.5rem;
+  flex-grow: 1;
 }
 
 .cards-page-card-preview p {
@@ -332,20 +301,6 @@
   display: flex;
   flex-direction: column;
   max-height: 90vh;
-  overflow-y: auto;
-}
-
-.cards-page-modal-inner::-webkit-scrollbar {
-  width: 8px;
-}
-
-.cards-page-modal-inner::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.cards-page-modal-inner::-webkit-scrollbar-thumb {
-  background: var(--violet-3);
-  border-radius: 4px;
 }
 
 .cards-page-modal-image {
@@ -387,7 +342,7 @@
   margin: 0 0 1rem 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: white;
+  color: var(--muted);
   line-height: 1.3;
 }
 
@@ -408,7 +363,17 @@
 }
 
 .cards-page-modal-body {
+  max-height: 50vh;
+  overflow-y: auto;
   margin-bottom: 2rem;
+}
+
+.cards-page-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.cards-page-modal-body::-webkit-scrollbar-thumb {
+  background: var(--violet-3);
+  border-radius: 4px;
 }
 
 .cards-page-modal-content-text {

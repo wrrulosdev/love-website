@@ -18,3 +18,7 @@ async function fetchCards(
   }
   return [];
 }
+
+export async function getCards(signal?: AbortSignal) {
+  return fetchCards('/cards/get_cards', undefined, signal);
+}
