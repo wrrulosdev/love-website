@@ -34,7 +34,7 @@
 }
 
 .nav-item:hover {
-  background-color: var(--violet-3);
+  background-color: var(--violet-1);
 }
 
 .nav-item:hover svg {
