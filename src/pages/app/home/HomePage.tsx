@@ -40,8 +40,8 @@ const HomePage: React.FC = () => {
           />
           <PageCard
             icon={BookIcon}
-            title="En desarrollo"
-            description="Añade nuevos momentos estelares a nuestro universo, cada foto una nueva aventura que expande nuestro cosmos de recuerdos."
+            title="Nuevas Constelaciones"
+            description="Pronto añadiremos nuevas historias y momentos que expandirán nuestro universo de recuerdos y aventuras compartidas."
             to="/home"
           />
           <PageCard
