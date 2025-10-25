@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EditImagesPage.css';
 import './AdminSubPage.css';
@@ -16,6 +16,7 @@ const EditImagesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImages, setModalImages] = useState<Photo[]>([]);
   const [modalEndIndex, setModalEndIndex] = useState(20);
+  const [modalSearch, setModalSearch] = useState('');
 
   const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
   const [title, setTitle] = useState('');
@@ -32,61 +33,133 @@ const EditImagesPage: React.FC = () => {
   const [success, setSuccess] = useState(false);
 
   const modalScrollRef = useRef<HTMLDivElement>(null);
+  const modalImagesRef = useRef<Photo[]>([]);
+  const filteredRef = useRef<Photo[]>([]);
 
   useEffect(() => {
     loadImages();
   }, []);
 
+  /**
+   * Fetches the photo list and simulates a large dataset
+   * by repeating items from the API for testing and scrolling.
+   */
   const loadImages = async () => {
     try {
       setLoading(true);
       setError(null);
       const data = await fetchPhotosApi();
-      setImages(data);
-      setModalImages(data);
+
+      const repeated = Array.from({ length: 1000 }, (_, i) => ({
+        ...data[0],
+        id: `fake-${i}`,
+        title: `${data[0].title || 'Image'} ${i + 1}`,
+      }));
+
+      setImages(repeated);
+      setModalImages(repeated);
+      modalImagesRef.current = repeated;
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Error al cargar las imágenes');
+      setError(err instanceof Error ? err.message : 'Failed to load images');
     } finally {
       setLoading(false);
     }
   };
 
+  /** Keeps the modal reference in sync when modalImages changes. */
+  useEffect(() => {
+    modalImagesRef.current = modalImages;
+  }, [modalImages]);
+
+  /** Filters images in the modal by title (case-insensitive). */
+  const filteredModalImages = useMemo(() => {
+    const q = modalSearch.trim().toLowerCase();
+    if (!q) return modalImages;
+    return modalImages.filter((img) => (img.title || '').toLowerCase().includes(q));
+  }, [modalImages, modalSearch]);
+
+  /**
+   * Keeps the filtered reference up to date and resets scroll index
+   * whenever the search query changes.
+   */
+  useEffect(() => {
+    filteredRef.current = filteredModalImages;
+    setModalEndIndex(20);
+    if (modalScrollRef.current) modalScrollRef.current.scrollTop = 0;
+  }, [modalSearch, filteredModalImages]);
+
+  /**
+   * Handles scroll events inside the modal grid.
+   * When near the bottom, loads 20 more items.
+   */
   const handleModalScroll = useCallback(() => {
-    if (!modalScrollRef.current) return;
-    const { scrollTop, scrollHeight, clientHeight } = modalScrollRef.current;
+    const el = modalScrollRef.current;
+    if (!el) return;
+    const { scrollTop, scrollHeight, clientHeight } = el;
     const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
 
-    if (scrollPercentage > 0.8 && modalEndIndex < modalImages.length) {
-      setModalEndIndex((prev) => Math.min(prev + 20, modalImages.length));
+    if (scrollPercentage > 0.8) {
+      setModalEndIndex((prev) => {
+        const total = filteredRef.current.length;
+        if (prev >= total) return prev;
+        return Math.min(prev + 20, total);
+      });
     }
-  }, [modalEndIndex, modalImages.length]);
+  }, []);
 
+  /**
+   * Registers and cleans up scroll listener only when the modal is open.
+   */
   useEffect(() => {
-    const modalEl = modalScrollRef.current;
-    if (modalEl) {
-      modalEl.addEventListener('scroll', handleModalScroll);
-      return () => modalEl.removeEventListener('scroll', handleModalScroll);
-    }
-  }, [handleModalScroll]);
+    if (!modalOpen) return;
+    const el = modalScrollRef.current;
+    if (!el) return;
 
+    el.addEventListener('scroll', handleModalScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleModalScroll);
+  }, [modalOpen, handleModalScroll]);
+
+  /**
+   * Opens the modal and ensures:
+   * - Initial index reset
+   * - Scroll starts at top
+   * - Expands items until scroll becomes available
+   */
   const openModal = () => {
     setModalOpen(true);
     setModalEndIndex(20);
+
     setTimeout(() => {
-      if (modalScrollRef.current) {
-        modalScrollRef.current.scrollTop = 0;
-      }
+      if (modalScrollRef.current) modalScrollRef.current.scrollTop = 0;
+
+      let tries = 0;
+      const maxTries = 10;
+      const expandInterval = setInterval(() => {
+        const el = modalScrollRef.current;
+        const total = filteredRef.current.length;
+        if (!el || tries >= maxTries) {
+          clearInterval(expandInterval);
+          return;
+        }
+
+        if (el.scrollHeight > el.clientHeight || modalEndIndex >= total) {
+          clearInterval(expandInterval);
+          return;
+        }
+
+        setModalEndIndex((prev) => Math.min(prev + 20, total));
+        tries++;
+      }, 60);
     }, 0);
   };
 
+  /** Handles selecting an image and populates the form fields. */
   const handleSelectImage = (image: Photo) => {
     setSelectedImage(image);
     setTitle(image.title || '');
     setDescription(image.description || '');
-
     const formattedDate = image.date ? new Date(image.date).toISOString().split('T')[0] : '';
     setDate(formattedDate);
-
     setCategory(image.category || '');
     setLocation(image.location || '');
     setShowInBook(image.in_book || false);
@@ -96,21 +169,23 @@ const EditImagesPage: React.FC = () => {
     setSuccess(false);
   };
 
+  /**
+   * Updates the selected image with form data.
+   * Displays success and error states accordingly.
+   */
   const handleUpdate = async () => {
     if (!selectedImage) return;
 
     if (!title.trim()) {
-      setActionError('El título es obligatorio');
+      setActionError('Title is required');
       return;
     }
-
     if (!category) {
-      setActionError('Debes seleccionar una categoría');
+      setActionError('Category is required');
       return;
     }
-
     if (!date) {
-      setActionError('Debes seleccionar una fecha');
+      setActionError('Date is required');
       return;
     }
 
@@ -132,10 +207,7 @@ const EditImagesPage: React.FC = () => {
 
       await updatePhotoApi(updateData);
 
-      const updatedImage = {
-        ...selectedImage,
-        ...updateData,
-      };
+      const updatedImage = { ...selectedImage, ...updateData };
 
       setImages((prev) => prev.map((img) => (img.id === selectedImage.id ? updatedImage : img)));
       setModalImages((prev) =>
@@ -145,19 +217,22 @@ const EditImagesPage: React.FC = () => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : 'Error al actualizar la imagen');
+      setActionError(err instanceof Error ? err.message : 'Failed to update image');
     } finally {
       setSaving(false);
     }
   };
 
+  /**
+   * Deletes the selected image after user confirmation.
+   * Removes it from both state lists.
+   */
   const handleDelete = async () => {
     if (!selectedImage) return;
 
     const confirmed = window.confirm(
-      '¿Estás seguro de que quieres eliminar esta imagen? Esta acción no se puede deshacer.'
+      'Are you sure you want to delete this image? This action cannot be undone.'
     );
-
     if (!confirmed) return;
 
     setDeleting(true);
@@ -176,12 +251,13 @@ const EditImagesPage: React.FC = () => {
       setShowInBook(false);
       setShowInTimeline(false);
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : 'Error al eliminar la imagen');
+      setActionError(err instanceof Error ? err.message : 'Failed to delete image');
     } finally {
       setDeleting(false);
     }
   };
 
+  /** Navigates back to the admin main page. */
   const handleBack = () => {
     navigate('/admin');
   };
@@ -454,12 +530,37 @@ const EditImagesPage: React.FC = () => {
               </button>
             </div>
 
+            <div className="edit-images-modal-search">
+              <input
+                type="search"
+                placeholder="Buscar por título..."
+                value={modalSearch}
+                onChange={(e) => setModalSearch(e.target.value)}
+                aria-label="Buscar imágenes por título"
+              />
+              {modalSearch && (
+                <button
+                  type="button"
+                  className="edit-images-modal-clear"
+                  onClick={() => setModalSearch('')}
+                  aria-label="Limpiar búsqueda"
+                >
+                  ×
+                </button>
+              )}
+              <span className="edit-images-modal-meta">
+                {filteredModalImages.length} resultados
+              </span>
+            </div>
+
             <div className="edit-images-modal-grid" ref={modalScrollRef}>
-              {modalImages.length === 0 ? (
-                <p>No hay imágenes</p>
+              {filteredModalImages.length === 0 ? (
+                <div className="edit-images-modal-empty">
+                  <p>{modalSearch ? 'No se encontraron resultados' : 'No hay imágenes'}</p>
+                </div>
               ) : (
                 <>
-                  {modalImages.slice(0, modalEndIndex).map((image) => (
+                  {filteredModalImages.slice(0, modalEndIndex).map((image) => (
                     <div
                       key={image.id}
                       className="edit-images-modal-item"
@@ -486,7 +587,7 @@ const EditImagesPage: React.FC = () => {
                     </div>
                   ))}
 
-                  {modalEndIndex < modalImages.length && (
+                  {modalEndIndex < filteredModalImages.length && (
                     <div className="edit-images-modal-loading">
                       <div className="edit-images-loading-spinner-small"></div>
                       <p>Cargando más imágenes...</p>
