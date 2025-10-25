@@ -8,7 +8,6 @@ import type { Photo } from '../../../interfaces/api';
 const TimelinePage: React.FC = () => {
   const { show, hide } = useLoading();
   const { photos, loading, error, refetch } = usePhotos('Todas', 'timeline');
-
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -19,14 +18,23 @@ const TimelinePage: React.FC = () => {
     }
   }, [loading, show, hide]);
 
+  /**
+   * Opens the lightbox with the selected image.
+   *
+   * @param {string} imageUrl - URL of the clicked image
+   */
   const handleImageClick = (imageUrl: string) => {
     setSelectedImage(imageUrl);
   };
 
+  /**
+   * Closes the lightbox overlay.
+   */
   const handleCloseLightbox = () => {
     setSelectedImage(null);
   };
 
+  // Display API error state if fetching photos fails
   if (error) {
     return (
       <ApiErrorState

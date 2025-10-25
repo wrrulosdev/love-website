@@ -9,6 +9,15 @@ type LoadingOverlayProps = {
   backdropBlur?: boolean;
 };
 
+/**
+ * LoadingOverlay component renders a fullscreen overlay with a loading GIF and optional message.
+ *
+ * @param visible - toggles the overlay visibility
+ * @param message - text displayed under the loading GIF
+ * @param gifSrc - path or URL to the loading GIF
+ * @param size - maximum width and height for the GIF
+ * @param backdropBlur - applies a blur effect to the background when true
+ */
 const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   visible,
   message = 'Cargando...',

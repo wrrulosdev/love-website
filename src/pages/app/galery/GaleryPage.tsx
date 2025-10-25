@@ -9,10 +9,12 @@ import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { ImagesIcon } from 'lucide-react';
 
+// Predefined filter categories for gallery
 const FILTERS: FilterOption[] = ['Todas', 'Citas', 'Viajes', 'Casual'];
 
 /**
- * Gallery filter dropdown.
+ * Dropdown component for gallery filters.
+ * Allows selecting a photo category and resetting the scroll position.
  */
 const GalleryFilters = ({
   open,
@@ -63,6 +65,11 @@ const GalleryFilters = ({
   </div>
 );
 
+/**
+ * GaleryPage component displays a virtualized gallery of photos
+ * fetched from the API with optional category filters.
+ * Includes lightbox modal for viewing individual images in full size.
+ */
 const GaleryPage: React.FC = () => {
   const { show, hide } = useLoading();
   const { category, setCategory, photos, loading, error, refetch, source } = usePhotos(
@@ -74,7 +81,10 @@ const GaleryPage: React.FC = () => {
   const [selected, setSelected] = useState<Photo | null>(null);
   const { gridRef, endIndex, visibleSet, markVisible } = useVirtualGrid();
 
-  // Filtered photo list depending on category
+  /**
+   * Filter photos by category.
+   * If category is "Todas" or source is 'book', show all photos.
+   */
   const filtered = useMemo(
     () =>
       category === 'Todas' || source === 'book'
@@ -83,13 +93,17 @@ const GaleryPage: React.FC = () => {
     [category, photos, source]
   );
 
-  // Show or hide global loader
+  /**
+   * Show or hide the global loader when photos are loading
+   */
   useEffect(() => {
     if (loading) show('Loading photos...');
     else hide();
   }, [loading, show, hide]);
 
-  // Efficiently mark visible photos in the virtualized grid
+  /**
+   * Mark photos as visible in the virtual grid once rendered.
+   */
   useEffect(() => {
     if (filtered.length > 0 && endIndex >= 0) {
       markVisible(filtered);
@@ -97,7 +111,8 @@ const GaleryPage: React.FC = () => {
   }, [filtered, endIndex, markVisible]);
 
   /**
-   * Ensures image is pre-decoded when possible before showing.
+   * Preload image and select it for the lightbox.
+   * Ensures smooth rendering by decoding images before display.
    */
   const preloadAndSelect = useCallback(
     (photo: Photo | null) => {
@@ -110,10 +125,8 @@ const GaleryPage: React.FC = () => {
       img.src = photo.image_url;
       const set = () => setSelected(photo);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((img as any).decode) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (img as any).decode().then(set).catch(set);
+      if (img.decode) {
+        img.decode().then(set).catch(set);
       } else {
         img.onload = set;
         img.onerror = set;
@@ -124,10 +137,13 @@ const GaleryPage: React.FC = () => {
     [visibleSet]
   );
 
+  // Open image in lightbox
   const onOpenImage = useCallback((photo: Photo) => preloadAndSelect(photo), [preloadAndSelect]);
 
   /**
-   * Handles left/right navigation within lightbox.
+   * Navigate between images in the lightbox.
+   *
+   * @param {number} delta - Number of steps to move (1 = next, -1 = previous)
    */
   const navigate = useCallback(
     (delta: number) => {
@@ -143,7 +159,12 @@ const GaleryPage: React.FC = () => {
     [selected, filtered, preloadAndSelect]
   );
 
-  // Keyboard shortcuts for navigation
+  /**
+   * Keyboard navigation for lightbox:
+   * - Esc closes the lightbox
+   * - ArrowRight goes to next image
+   * - ArrowLeft goes to previous image
+   */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setSelected(null);
@@ -160,7 +181,7 @@ const GaleryPage: React.FC = () => {
       <ApiErrorState
         error={error}
         onRetry={() => refetch().catch(() => {})}
-        message="Failed to load images."
+        message="No pudimos cargar las imágenes."
       />
     );
   }

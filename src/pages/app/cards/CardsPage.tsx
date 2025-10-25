@@ -12,6 +12,9 @@ const CardsPage: React.FC = () => {
   const [selectedcard, setSelectedcard] = useState<Card | null>(null);
   const photos = [1];
 
+  /**
+   * Toggles the loading spinner when the cards are being fetched.
+   */
   useEffect(() => {
     if (loading) {
       show('Cargando cartas...');
@@ -20,14 +23,25 @@ const CardsPage: React.FC = () => {
     }
   }, [loading, show, hide]);
 
+  /**
+   * Opens a specific card in the modal view.
+   *
+   * @param {Card} card - The card to display.
+   */
   const opencard = (card: Card) => {
     setSelectedcard(card);
   };
 
+  /**
+   * Closes the open card modal.
+   */
   const closecard = () => {
     setSelectedcard(null);
   };
 
+  /**
+   * Allows closing the modal by pressing the "Escape" key.
+   */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closecard();
@@ -42,7 +56,7 @@ const CardsPage: React.FC = () => {
       <ApiErrorState
         error={error}
         onRetry={() => refetch().catch(() => {})}
-        message="No se pudieron cargar las cartas."
+        message="No pudimos cargar las cartas."
       />
     );
   }
@@ -91,9 +105,11 @@ const CardsPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="cards-page-card-preview">
                     <p>{card.content.substring(0, 150)}...</p>
                   </div>
+
                   <div className="cards-page-card-footer">
                     <span className="cards-page-card-read">Leer carta completa</span>
                     <svg

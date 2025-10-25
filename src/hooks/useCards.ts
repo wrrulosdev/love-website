@@ -3,13 +3,20 @@ import type { Card } from '../interfaces/api';
 import { getCards } from '../services/cardsApi';
 
 /**
- * Hook to handle Card loading, status, and errors.
+ * Custom hook to manage loading, fetching, and error handling
+ * for "cards" data from the API.
+ *
+ * Provides the cards array, loading state, error message, and a refetch function.
  */
 export function useCards() {
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetches card data from the API.
+   * Resets loading and error states before making the request.
+   */
   const fetchCardsData = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -17,7 +24,7 @@ export function useCards() {
       const result = await getCards();
       setCards(result || []);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error desconocido al cargar las tarjetas';
+      const msg = err instanceof Error ? err.message : 'Unknown error loading cards';
       setError(msg);
       setCards([]);
     } finally {
@@ -29,6 +36,9 @@ export function useCards() {
     fetchCardsData();
   }, [fetchCardsData]);
 
+  /**
+   * Exposed function to manually refetch cards.
+   */
   const refetch = useCallback(() => fetchCardsData(), [fetchCardsData]);
 
   return {

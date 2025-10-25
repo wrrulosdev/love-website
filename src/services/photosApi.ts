@@ -2,6 +2,14 @@ import type { Photo, ApiResponse } from '../interfaces/api';
 import type { FilterOption } from '../interfaces/photo';
 import { api } from './api';
 
+/**
+ * Generic helper to fetch photos from a given API path.
+ *
+ * @param path - API endpoint path
+ * @param params - optional query parameters
+ * @param signal - optional AbortSignal to cancel the request
+ * @returns Promise resolving to an array of Photo objects
+ */
 async function fetchPhotos(
   path: string,
   params?: Record<string, unknown>,
@@ -12,6 +20,7 @@ async function fetchPhotos(
     signal,
   });
 
+  // Check response structure and return photos array or empty
   if (data && data.status === 'success' && data.data && Array.isArray(data.data.photos)) {
     return data.data.photos;
   }
@@ -20,7 +29,12 @@ async function fetchPhotos(
 }
 
 /**
- * Retrieves photos from /images/get_images (supports optional category)
+ * Retrieves photos from `/images/get_images`.
+ * Supports optional category filtering.
+ *
+ * @param category - optional filter for photo category
+ * @param signal - optional AbortSignal for request cancellation
+ * @returns Promise resolving to an array of Photo objects
  */
 export async function getPhotosApi(
   category?: FilterOption,
@@ -32,21 +46,30 @@ export async function getPhotosApi(
 }
 
 /**
- * Retrieves book images from /images/get_book_images
+ * Retrieves book images from `/images/get_book_images`.
+ *
+ * @param signal - optional AbortSignal
+ * @returns Promise resolving to an array of Photo objects
  */
 export async function getBookImagesApi(signal?: AbortSignal): Promise<Photo[]> {
   return fetchPhotos('/images/get_book_images', undefined, signal);
 }
 
 /**
- * Retrieves timeline images from /images/get_timeline_images
+ * Retrieves timeline images from `/images/get_timeline_images`.
+ *
+ * @param signal - optional AbortSignal
+ * @returns Promise resolving to an array of Photo objects
  */
 export async function getTimelineImagesApi(signal?: AbortSignal): Promise<Photo[]> {
   return fetchPhotos('/images/get_timeline_images', undefined, signal);
 }
 
 /**
- * Updates a photo by ID
+ * Updates an existing photo on the server.
+ *
+ * @param data - object containing all editable photo fields
+ * @throws Error if the API response indicates failure
  */
 export async function updatePhotoApi(data: {
   id: number;
@@ -71,10 +94,16 @@ export async function updatePhotoApi(data: {
   const { data: responseData } = await api.put<ApiResponse<null>>('/images/update', formData);
 
   if (responseData.status !== 'success') {
-    throw new Error(responseData?.title || 'Error desconocido al actualizar la imagen');
+    throw new Error(responseData?.title || 'Unknown error updating photo');
   }
 }
 
+/**
+ * Deletes a photo by its ID.
+ *
+ * @param imageId - ID of the photo to delete
+ * @throws Error if the API response indicates failure
+ */
 export async function deletePhotoApi(imageId: number): Promise<void> {
   const formData = new FormData();
   formData.append('image_id', String(imageId));
@@ -87,12 +116,16 @@ export async function deletePhotoApi(imageId: number): Promise<void> {
   });
 
   if (data.status !== 'success') {
-    throw new Error(data?.title || 'Error desconocido al eliminar la imagen');
+    throw new Error(data?.title || 'Unknown error deleting photo');
   }
 }
 
 /**
- * Uploads an image to the server
+ * Uploads a new image to the server.
+ *
+ * @param formData - FormData containing the image file
+ * @returns Promise resolving to an object with the uploaded image URL
+ * @throws Error if the API response indicates failure
  */
 export async function uploadImageApi(formData: FormData): Promise<{ url: string }> {
   const { data } = await api.put<ApiResponse<{ url: string }>>('/images/upload', formData, {
@@ -104,12 +137,16 @@ export async function uploadImageApi(formData: FormData): Promise<{ url: string 
   if (data.status === 'success' && data.data?.url) {
     return { url: data.data.url };
   } else {
-    throw new Error(data?.title || 'Error desconocido al subir la imagen');
+    throw new Error(data?.title || 'Unknown error uploading image');
   }
 }
 
 /**
- * Fetches all photos (for admin/edit purposes)
+ * Fetches all photos without filtering.
+ * Primarily used for admin or edit purposes.
+ *
+ * @param signal - optional AbortSignal
+ * @returns Promise resolving to an array of Photo objects
  */
 export async function fetchPhotosApi(signal?: AbortSignal): Promise<Photo[]> {
   return fetchPhotos('/images/get_images', undefined, signal);

@@ -17,6 +17,10 @@ type CirclePosition = {
   transform?: string;
 };
 
+/**
+ * Predefined circle positions used to randomly place decorative dots
+ * around the PageCard for visual interest.
+ */
 const circlePositions: CirclePosition[] = [
   { top: '-15px', left: '-15px' },
   { top: '-15px', right: '-15px' },
@@ -28,6 +32,17 @@ const circlePositions: CirclePosition[] = [
   { top: '50%', right: '-20px', transform: 'translateY(-50%)' },
 ];
 
+/**
+ * PageCard component.
+ *
+ * Renders a clickable card linking to a specified route, displaying
+ * an icon, title, description, and a randomly positioned decorative circle.
+ *
+ * @param {LucideIcon} Icon - Icon component rendered inside the card
+ * @param {string} title - Card title
+ * @param {string} description - Card description
+ * @param {string} to - Navigation target path
+ */
 const PageCard: React.FC<PageCardProps> = ({ icon: Icon, title, description, to }) => {
   const randomPosition = circlePositions[Math.floor(Math.random() * circlePositions.length)];
 
@@ -50,6 +65,7 @@ const PageCard: React.FC<PageCardProps> = ({ icon: Icon, title, description, to 
         <Icon className="icon" aria-hidden />
         <span className="icon-circle" />
       </div>
+
       <h2>{title}</h2>
       <p>{description}</p>
     </Link>

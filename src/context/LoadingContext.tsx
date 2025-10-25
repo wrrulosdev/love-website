@@ -10,9 +10,12 @@ type LoadingContextType = {
 
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
+/**
+ * Provider component that wraps the app and manages loading state.
+ */
 export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<string | undefined>('Cargando...');
+  const [isLoading, setIsLoading] = useState(false); // Tracks if loading overlay is visible
+  const [message, setMessage] = useState<string | undefined>('Cargando...'); // Default loading message
 
   const setLoading = useCallback((v: boolean) => {
     setIsLoading(v);
@@ -35,10 +38,15 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   );
 };
 
+/**
+ * Custom hook to access the loading context.
+ * Throws an error if used outside the LoadingProvider.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
 export function useLoading() {
   const ctx = useContext(LoadingContext);
   if (!ctx) {
-    throw new Error('useLoading debe usarse dentro de LoadingProvider');
+    throw new Error('useLoading must be used within LoadingProvider');
   }
   return ctx;
 }

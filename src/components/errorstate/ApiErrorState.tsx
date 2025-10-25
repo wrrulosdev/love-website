@@ -7,6 +7,13 @@ type ApiErrorStateProps = {
   message?: string;
 };
 
+/**
+ * ApiErrorState
+ *
+ * Displays a friendly UI when an API call fails.
+ * Shows an error icon, a title, optional custom message, error details,
+ * and optionally a retry button if `onRetry` is provided.
+ */
 const ApiErrorState: React.FC<ApiErrorStateProps> = ({ error, onRetry, message }) => {
   return (
     <div className="api-error">

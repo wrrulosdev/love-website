@@ -3,6 +3,7 @@ import { Dog, Lock, Heart, Sparkles, Code } from 'lucide-react';
 import './SimplePasswordPage.css';
 import { useNavigate } from 'react-router-dom';
 
+// Secret password to access the page (our relation ship date)
 const SECRET = '27092022';
 
 const SimplePasswordPage: React.FC = () => {
@@ -11,14 +12,26 @@ const SimplePasswordPage: React.FC = () => {
   const [showHearts, setShowHearts] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  /**
+   * Handles password input change
+   * @param {ChangeEvent<HTMLInputElement>} e - input change event
+   */
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
+  /**
+   * Handles form submission
+   * - If password matches SECRET, show hearts, store auth in session, navigate to /home
+   * - Otherwise, trigger shake animation and reset input
+   * @param {FormEvent<HTMLFormElement>} e - form submit event
+   */
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (password === SECRET) {
       setShowHearts(true);
+
       setTimeout(() => {
         sessionStorage.setItem('auth', 'true');
         navigate('/home');
@@ -30,6 +43,7 @@ const SimplePasswordPage: React.FC = () => {
     }
   };
 
+  // If user is already authenticated in sessionStorage, redirect to home
   useEffect(() => {
     if (sessionStorage.getItem('auth') === 'true') {
       navigate('/home');

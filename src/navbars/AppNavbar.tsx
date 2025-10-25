@@ -8,7 +8,7 @@ import {
   GithubIcon,
   BookIcon,
 } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './AppNavbar.css';
 
 type NavItem = {
@@ -36,6 +36,7 @@ const navItems: NavItem[] = [
 const AppNavbar: React.FC = () => {
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +73,13 @@ const AppNavbar: React.FC = () => {
           <NavLink
             key={item.path}
             to={item.path!}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            className={({ isActive }) => {
+              const isAdminRelated =
+                item.path === '/admin' &&
+                (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login'));
+
+              return `nav-item ${isActive || isAdminRelated ? 'active' : ''}`;
+            }}
             title={item.name}
           >
             {item.icon}

@@ -9,6 +9,9 @@ type User = {
   [k: string]: unknown;
 };
 
+/**
+ * Type definition for the authentication context.
+ */
 type AuthContextType = {
   user: User | null;
   accessToken: string | null;
@@ -20,20 +23,20 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Localstorage keys
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 const USER_KEY = 'auth_user';
 
-/* 
-  AuthProvider
-*/
+/**
+ * AuthProvider wraps the app and manages authentication state.
+ */
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Access token state
   const [accessToken, setAccessToken] = useState<string | null>(() =>
     localStorage.getItem(ACCESS_TOKEN_KEY)
   );
 
+  // User state, parsed from localStorage if available
   const [user, setUser] = useState<User | null>(() => {
     try {
       const raw = localStorage.getItem(USER_KEY);
@@ -43,8 +46,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
+  // Ready state indicates whether the initial auth check has finished
   const [ready, setReady] = useState(false);
 
+  /**
+   * Sets up API interceptors:
+   * - Adds Authorization header with access token to all requests
+   * - Handles 401 errors by attempting token refresh
+   */
   useEffect(() => {
     const reqId = api.interceptors.request.use((cfg) => {
       const token = accessToken ?? localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -94,6 +103,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [accessToken]);
 
+  /**
+   * Initial authentication check:
+   * - Tries access token
+   * - Falls back to refresh token if available
+   * - Loads current user info
+   */
   useEffect(() => {
     (async () => {
       const token = localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -149,9 +164,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })();
   }, []);
 
-  /* 
-    Clears tokens and user info from localStorage and memory.
-  */
+  /**
+   * Clears tokens and user info from localStorage and memory
+   */
   async function doLocalLogout() {
     setAccessToken(null);
     setUser(null);
@@ -160,9 +175,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem(USER_KEY);
   }
 
-  /* 
-    Calls the login API with username and password.
-  */
+  /**
+   * Logs in using username and password, storing tokens and user info
+   */
   async function login(username: string, password: string) {
     const data = await authApi.loginApi(username, password);
     if (!data?.access_token) throw new Error('login failed: no access token');
@@ -181,9 +196,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  /* 
-    Calls the backend to log out and clears local state.
-  */
+  /**
+   * Logs out from the backend (optional all sessions) and clears local state
+   */
   async function logout(allSessions = false) {
     try {
       await authApi.logoutApi(allSessions);
@@ -193,7 +208,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await doLocalLogout();
   }
 
-  /* Returns current access token from memory or localStorage */
+  /**
+   * Returns current access token from memory or localStorage
+   */
   function getAccessToken() {
     return accessToken ?? localStorage.getItem(ACCESS_TOKEN_KEY);
   }
@@ -211,6 +228,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
+/**
+ * Hook to access the auth context safely.
+ * Throws an error if used outside AuthProvider.
+ */
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');

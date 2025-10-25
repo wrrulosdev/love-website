@@ -16,15 +16,21 @@ const BookPage: React.FC = () => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const dotsRef = useRef<HTMLDivElement | null>(null);
 
+  /**
+   * Displays or hides the global loading overlay depending on the photo fetch state.
+   */
   useEffect(() => {
     if (loading) {
-      show('Cargando fotos...');
+      show('Loading photos...');
     } else {
       hide();
     }
   }, [loading, show, hide]);
 
-  // Responsive two-up toggle (>= 768px)
+  /**
+   * Enables "two-up" mode (two visible pages) on larger screens.
+   * Automatically toggles based on a media query (min-width: 768px).
+   */
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
     const onChange = () => setTwoUp(mq.matches);
@@ -35,22 +41,28 @@ const BookPage: React.FC = () => {
 
   const total = photos.length;
 
-  // Normalized left index
+  /**
+   * Calculates the left page index for the current spread.
+   * Ensures that in two-page mode, indices are even (left page of the pair).
+   */
   const leftIndex = useMemo(
     () => (twoUp ? Math.floor(currentIndex / 2) * 2 : currentIndex),
     [currentIndex, twoUp]
   );
 
+  /**
+   * Calculates the right page index when in two-page mode.
+   * Returns `null` if no right page is available.
+   */
   const rightIndex = useMemo(
     () => (twoUp && total > 1 ? (leftIndex + 1 < total ? leftIndex + 1 : null) : null),
     [leftIndex, twoUp, total]
   );
 
   /**
+   * Returns the index of the last valid left page in a two-up layout.
    *
-   * Returns the last valid left index for two-up layout.
-   *
-   * @returns number - last left index (0-based)
+   * @returns {number} The last valid left page index (0-based).
    */
   const lastLeftIndex = useCallback((): number => {
     if (total <= 1) return 0;
@@ -58,12 +70,10 @@ const BookPage: React.FC = () => {
   }, [total]);
 
   /**
+   * Handles page navigation (forward or backward) with animation lock.
+   * Prevents rapid navigation by setting a temporary animation flag.
    *
-   * Move the current index forward or backward. Uses an animation lock to
-   * avoid rapid repeated navigation.
-   *
-   * @param direction - 'prev' | 'next'
-   * @returns void
+   * @param {'prev' | 'next'} direction - The navigation direction.
    */
   const navigate = useCallback(
     (direction: 'prev' | 'next') => {
@@ -72,6 +82,7 @@ const BookPage: React.FC = () => {
 
       setTimeout(() => {
         if (direction === 'prev') {
+          // Navigate backward
           if (twoUp) {
             setCurrentIndex((prev) => {
               const step = 2;
@@ -83,6 +94,7 @@ const BookPage: React.FC = () => {
             setCurrentIndex((prev) => (prev === 0 ? Math.max(0, total - 1) : prev - 1));
           }
         } else {
+          // Navigate forward
           if (twoUp) {
             setCurrentIndex((prev) => {
               const step = 2;
@@ -94,16 +106,21 @@ const BookPage: React.FC = () => {
           }
         }
 
+        // Unlock animation after transition
         setTimeout(() => setIsAnimating(false), 300);
       }, 50);
     },
     [isAnimating, total, twoUp, lastLeftIndex]
   );
 
+  // Shortcut functions for prev/next navigation
   const prevImage = useCallback(() => navigate('prev'), [navigate]);
   const nextImage = useCallback(() => navigate('next'), [navigate]);
 
-  // Keep currentIndex valid when layout (twoUp) or total changes
+  /**
+   * Ensures that the current index remains valid when layout mode (twoUp) or
+   * total number of photos changes. Prevents out-of-range indexes.
+   */
   useEffect(() => {
     if (twoUp) {
       setCurrentIndex((prev) => {
@@ -116,7 +133,7 @@ const BookPage: React.FC = () => {
     }
   }, [twoUp, lastLeftIndex, total]);
 
-  // Pagination dots
+  // Pagination dots logic
   const maxDotsVisible = 5;
   const effectiveIndex = twoUp ? Math.floor(leftIndex / 2) : leftIndex;
   const totalDots = twoUp ? Math.ceil(total / 2) : total;
@@ -128,7 +145,10 @@ const BookPage: React.FC = () => {
     startDot = Math.max(0, endDot - maxDotsVisible);
   }
 
-  // Auto-scroll dots container to keep active dot centered
+  /**
+   * Automatically scrolls the pagination dot container to keep
+   * the active dot centered when navigating.
+   */
   useEffect(() => {
     const container = dotsRef.current;
     if (!container) return;
@@ -141,7 +161,10 @@ const BookPage: React.FC = () => {
     container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
   }, [effectiveIndex, startDot, endDot]);
 
-  // Keyboard navigation
+  /**
+   * Enables keyboard navigation for left/right arrow keys.
+   * Disabled while an animation is in progress.
+   */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isAnimating) return;
@@ -152,7 +175,9 @@ const BookPage: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isAnimating, prevImage, nextImage]);
 
-  // Map photos to ImageCardProps for current left/right
+  /**
+   * Maps the current left photo to the `ImageCard` props format.
+   */
   const currentLeftCard: ImageCardProps | null = useMemo(() => {
     const p: Photo | undefined = photos[leftIndex];
     if (!p) return null;
@@ -164,6 +189,9 @@ const BookPage: React.FC = () => {
     };
   }, [photos, leftIndex]);
 
+  /**
+   * Maps the current right photo (if any) to the `ImageCard` props format.
+   */
   const currentRightCard: ImageCardProps | null = useMemo(() => {
     if (rightIndex === null) return null;
     const p: Photo | undefined = photos[rightIndex];
@@ -176,12 +204,13 @@ const BookPage: React.FC = () => {
     };
   }, [photos, rightIndex]);
 
+  // Render error state if API fails
   if (error) {
     return (
       <ApiErrorState
         error={error}
         onRetry={() => refetch().catch(() => {})}
-        message="No pudimos cargar las imágenes."
+        message="We couldn't load the images."
       />
     );
   }
@@ -193,10 +222,10 @@ const BookPage: React.FC = () => {
       {!loading && !error && photos.length === 0 ? (
         <div className="default-empty-state">
           <BookIcon size={64} />
-          <h3>No hay imágenes disponibles</h3>
-          <p>El libro de este universo todavia no ha sido escrito</p>
+          <h3>No images available</h3>
+          <p>The storybook of this universe hasn't been written yet.</p>
           <button className="default-retry-button" onClick={() => refetch().catch(() => {})}>
-            Reintentar
+            Retry
           </button>
         </div>
       ) : (
@@ -228,22 +257,22 @@ const BookPage: React.FC = () => {
               <button
                 className="text-nav-button prev"
                 onClick={prevImage}
-                aria-label="Página anterior"
+                aria-label="Previous page"
                 disabled={isAnimating}
               >
-                &lt; Página anterior
+                &lt; Previous Page
               </button>
               <button
                 className="text-nav-button next"
                 onClick={nextImage}
-                aria-label="Página siguiente"
+                aria-label="Next page"
                 disabled={isAnimating}
               >
-                Página siguiente &gt;
+                Next Page &gt;
               </button>
             </div>
 
-            <div className="pagination-dots" ref={dotsRef} role="list" aria-label="Paginación">
+            <div className="pagination-dots" ref={dotsRef} role="list" aria-label="Pagination">
               {Array.from({ length: endDot - startDot }).map((_, i) => {
                 const dotIndex = startDot + i;
 
@@ -254,7 +283,7 @@ const BookPage: React.FC = () => {
                       key={dotIndex}
                       className={`dot ${isActive ? 'active' : ''}`}
                       onClick={() => !isAnimating && setCurrentIndex(dotIndex * 2)}
-                      aria-label={`Ir a las páginas ${dotIndex * 2 + 1} y ${Math.min(total, dotIndex * 2 + 2)}`}
+                      aria-label={`Go to pages ${dotIndex * 2 + 1} and ${Math.min(total, dotIndex * 2 + 2)}`}
                       role="listitem"
                       disabled={isAnimating}
                     />
@@ -268,7 +297,7 @@ const BookPage: React.FC = () => {
                     key={dotIndex}
                     className={`dot ${isActive ? 'active' : ''}`}
                     onClick={() => !isAnimating && setCurrentIndex(dotIndex)}
-                    aria-label={`Ir a la página ${dotIndex + 1}`}
+                    aria-label={`Go to page ${dotIndex + 1}`}
                     role="listitem"
                     disabled={isAnimating}
                   />
@@ -277,9 +306,7 @@ const BookPage: React.FC = () => {
             </div>
 
             <div className="book-caption">
-              <em>
-                "Cada página de nuestro libro cuenta una historia de amor que crece día a día"
-              </em>
+              <em>"Each page of our book tells a love story that grows day by day."</em>
             </div>
           </div>
         </>

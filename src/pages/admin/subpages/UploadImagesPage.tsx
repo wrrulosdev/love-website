@@ -7,19 +7,28 @@ import './AdminSubPage.css';
 
 const UploadImagesPage: React.FC = () => {
   const navigate = useNavigate();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
+
   const [showInBook, setShowInBook] = useState(false);
   const [showInTimeline, setShowInTimeline] = useState(false);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  /**
+   * Handles image file selection and validates its type and size.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - File input change event
+   */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -37,6 +46,7 @@ const UploadImagesPage: React.FC = () => {
 
       setImageFile(file);
       setError(null);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -45,32 +55,20 @@ const UploadImagesPage: React.FC = () => {
     }
   };
 
+  /**
+   * Handles the image upload form submission.
+   * Validates inputs and sends the data to the upload API endpoint.
+   *
+   * @param {React.FormEvent} e - Form submit event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!imageFile) {
-      setError('Debes seleccionar una imagen');
-      return;
-    }
-
-    if (!category) {
-      setError('Debes seleccionar una categoría');
-      return;
-    }
-
-    if (!location) {
-      setError('Debes seleccionar una ubicación');
-    }
-
-    if (!date) {
-      setError('Debes seleccionar una fecha');
-      return;
-    }
-
-    if (!title.trim()) {
-      setError('Debes ingresar un título');
-      return;
-    }
+    if (!imageFile) return setError('Debes seleccionar una imagen');
+    if (!category) return setError('Debes seleccionar una categoría');
+    if (!location) return setError('Debes seleccionar una ubicación');
+    if (!date) return setError('Debes seleccionar una fecha');
+    if (!title.trim()) return setError('Debes ingresar un título');
 
     setError(null);
     setLoading(true);
@@ -103,15 +101,18 @@ const UploadImagesPage: React.FC = () => {
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
 
-      console.log('Imagen subida exitosamente:', response.url);
+      console.log('Image uploaded successfully:', response.url);
     } catch (err: any) {
-      console.error('Error al subir imagen:', err);
+      console.error('Error uploading image:', err);
       setError(err?.message || 'Error al subir la imagen. Por favor, intenta nuevamente.');
     } finally {
       setLoading(false);
     }
   };
 
+  /**
+   * Navigates back to the admin dashboard.
+   */
   const handleBack = () => {
     navigate('/admin');
   };

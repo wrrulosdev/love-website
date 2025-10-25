@@ -6,7 +6,15 @@ import { getBookImagesApi, getPhotosApi, getTimelineImagesApi } from '../service
 export type PhotosSource = 'images' | 'book' | 'timeline';
 
 /**
- * Hook to handle Photos loading, status, and errors.
+ * Custom hook to manage photo fetching, loading state, and errors.
+ *
+ * Handles three sources:
+ * - 'images': general gallery images (optionally filtered by category)
+ * - 'book': book-specific images
+ * - 'timeline': timeline images (events)
+ *
+ * @param initialCategory - default category filter for 'images' source
+ * @param initialSource - default source of photos
  */
 export function usePhotos(
   initialCategory: FilterOption = 'Todas',
@@ -18,10 +26,18 @@ export function usePhotos(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetch photos based on category and source.
+   * Sets loading and error states appropriately.
+   *
+   * @param cat - optional category override
+   * @param src - optional source override
+   */
   const fetchPhotos = useCallback(
     async (cat?: FilterOption, src?: PhotosSource) => {
       setLoading(true);
       setError(null);
+
       try {
         const useCat = cat ?? category;
         const useSrc = src ?? source;
@@ -40,7 +56,7 @@ export function usePhotos(
         const msg =
           err && typeof err === 'object' && 'message' in err
             ? (err as any).message
-            : 'Error desconocido al cargar imágenes';
+            : 'Unknown error loading images';
         setError(String(msg));
         setPhotos([]);
       } finally {
@@ -54,6 +70,10 @@ export function usePhotos(
     fetchPhotos();
   }, [fetchPhotos]);
 
+  /**
+   * Refetch function to manually reload photos.
+   * Can override category or source if needed.
+   */
   const refetch = useCallback(
     (cat?: FilterOption, src?: PhotosSource) => {
       return fetchPhotos(cat, src);
@@ -61,6 +81,7 @@ export function usePhotos(
     [fetchPhotos]
   );
 
+  // Return state and actions to use in components
   return {
     category,
     setCategory,
