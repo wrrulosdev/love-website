@@ -9,7 +9,7 @@ import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { ImagesIcon } from 'lucide-react';
 
-// Predefined filter categories for gallery
+// Filter categories for gallery
 const FILTERS: FilterOption[] = ['Todas', 'Citas', 'Viajes', 'Casual'];
 
 /**
