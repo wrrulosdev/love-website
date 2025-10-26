@@ -80,7 +80,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
 }
 
 .edit-images-empty-state p {
@@ -133,7 +133,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
 }
 
 .edit-images-change-button {
@@ -433,7 +433,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #000;
+  color: var(--muted);
 }
 
 .edit-images-modal-search {
