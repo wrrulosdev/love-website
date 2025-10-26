@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './AppNavbar.css';
+import { GITHUB_REPOSITORY } from '../constants/urls';
 
 type NavItem = {
   name: string;
@@ -29,7 +30,7 @@ const navItems: NavItem[] = [
     name: 'Github',
     icon: <GithubIcon size={24} />,
     external: true,
-    path: 'https://github.com/wrrulosdev/love-website',
+    path: GITHUB_REPOSITORY,
   },
 ];
 
