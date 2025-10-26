@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MailIcon, XIcon, CalendarIcon, UserIcon } from 'lucide-react';
+import { MailIcon, XIcon, CalendarIcon, UserIcon, ArrowRight } from 'lucide-react';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { useCards } from '../../../hooks/useCards';
@@ -112,17 +112,7 @@ const CardsPage: React.FC = () => {
 
                   <div className="cards-page-card-footer">
                     <span className="cards-page-card-read">Leer carta completa</span>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <ArrowRight size={20} />
                   </div>
                 </article>
               ))}
