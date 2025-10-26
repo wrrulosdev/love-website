@@ -89,7 +89,7 @@ const GaleryPage: React.FC = () => {
     () =>
       category === 'Todas' || source === 'book'
         ? photos
-        : photos.filter((p) => p.category === category),
+        : photos.filter((p) => p.category?.toLowerCase() === category.toLowerCase()),
     [category, photos, source]
   );
 
