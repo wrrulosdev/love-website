@@ -89,8 +89,6 @@ const UploadImagesPage: React.FC = () => {
 
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
-
-      console.log('Image uploaded successfully:', response.url);
     } catch (err: any) {
       console.error('Error uploading image:', err);
       setError(err?.message || 'Error al subir la imagen. Por favor, intenta nuevamente.');
