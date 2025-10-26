@@ -74,7 +74,7 @@ const UploadImagesPage: React.FC = () => {
       formData.append('in_book', String(showInBook));
       formData.append('in_timeline', String(showInTimeline));
 
-      const response = await uploadImageApi(formData);
+      await uploadImageApi(formData);
 
       setSuccess(true);
       setTitle('');

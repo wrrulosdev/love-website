@@ -54,7 +54,7 @@ const UploadCardPage: React.FC = () => {
     setSuccess(false);
 
     try {
-      const response = await uploadCardApi({
+      await uploadCardApi({
         title: title.trim(),
         content: content.trim(),
         image_url: imageUrl.trim(),
@@ -68,7 +68,6 @@ const UploadCardPage: React.FC = () => {
       setCardDate('');
       setAuthor('');
       setImageUrl('');
-      console.log('Card uploaded successfully:', response);
     } catch (err: any) {
       console.error('Error uploading card:', err);
       setError(
