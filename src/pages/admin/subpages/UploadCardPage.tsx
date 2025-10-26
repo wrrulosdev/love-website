@@ -27,27 +27,27 @@ const UploadCardPage: React.FC = () => {
     e.preventDefault();
 
     if (!imageUrl.trim()) {
-      setError('Image URL is required.');
+      setError('La URL de la imagen es obligatoria.');
       return;
     }
 
     if (!title.trim()) {
-      setError('Title is required.');
+      setError('El título es obligatorio.');
       return;
     }
 
     if (!content.trim()) {
-      setError('Content is required.');
+      setError('El contenido es obligatorio.');
       return;
     }
 
     if (!cardDate) {
-      setError('Date is required.');
+      setError('La fecha es obligatoria.');
       return;
     }
 
     if (!author.trim()) {
-      setError('Author is required.');
+      setError('El autor es obligatorio.');
       return;
     }
 
@@ -74,7 +74,9 @@ const UploadCardPage: React.FC = () => {
       console.log('Card uploaded successfully:', response);
     } catch (err: any) {
       console.error('Error uploading card:', err);
-      setError(err?.message || 'An error occurred while uploading the card. Please try again.');
+      setError(
+        err?.message || 'Ocurrió un error al subir la carta. Por favor, intenta nuevamente.'
+      );
     } finally {
       setLoading(false);
     }
@@ -103,11 +105,11 @@ const UploadCardPage: React.FC = () => {
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            <span>Back</span>
+            <span>Volver</span>
           </button>
           <div>
-            <h1>Upload New Card</h1>
-            <p>Add a new special card to the collection</p>
+            <h1>Subir Nueva Carta</h1>
+            <p>Agrega una nueva carta especial a la colección</p>
           </div>
         </div>
       </header>
@@ -116,51 +118,47 @@ const UploadCardPage: React.FC = () => {
         <div className="upload-card-container">
           <div className="upload-card-form">
             <div className="upload-card-form-grid">
-              {/* Image URL field */}
               <div className="upload-card-form-group">
-                <label htmlFor="imageUrl">Image URL</label>
+                <label htmlFor="imageUrl">URL de la Imagen</label>
                 <input
                   id="imageUrl"
                   type="text"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://image-link.com"
+                  placeholder="https://enlace-de-imagen.com"
                   required
                   disabled={loading}
                 />
               </div>
 
-              {/* Title field */}
               <div className="upload-card-form-group">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Título</label>
                 <input
                   id="title"
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Card title"
+                  placeholder="Título de la carta"
                   required
                   disabled={loading}
                 />
               </div>
 
-              {/* Author field */}
               <div className="upload-card-form-group">
-                <label htmlFor="author">Author</label>
+                <label htmlFor="author">Autor</label>
                 <input
                   id="author"
                   type="text"
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="Who wrote this card?"
+                  placeholder="¿Quién escribió esta carta?"
                   required
                   disabled={loading}
                 />
               </div>
 
-              {/* Date field */}
               <div className="upload-card-form-group">
-                <label htmlFor="cardDate">Date</label>
+                <label htmlFor="cardDate">Fecha</label>
                 <input
                   id="cardDate"
                   type="date"
@@ -171,14 +169,13 @@ const UploadCardPage: React.FC = () => {
                 />
               </div>
 
-              {/* Content textarea */}
               <div className="upload-card-form-group upload-card-full-width">
-                <label htmlFor="content">Content</label>
+                <label htmlFor="content">Contenido</label>
                 <textarea
                   id="content"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Write the content of the card..."
+                  placeholder="Escribe el contenido de la carta..."
                   rows={8}
                   required
                   disabled={loading}
@@ -186,7 +183,6 @@ const UploadCardPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Error message */}
             {error && (
               <div className="upload-card-message upload-card-error-message">
                 <svg
@@ -205,7 +201,6 @@ const UploadCardPage: React.FC = () => {
               </div>
             )}
 
-            {/* Success message */}
             {success && (
               <div className="upload-card-message upload-card-success-message">
                 <svg
@@ -218,11 +213,10 @@ const UploadCardPage: React.FC = () => {
                 >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
-                <span>Card uploaded successfully!</span>
+                <span>¡Carta subida exitosamente!</span>
               </div>
             )}
 
-            {/* Submit button */}
             <button
               type="button"
               onClick={handleSubmit}
@@ -239,7 +233,7 @@ const UploadCardPage: React.FC = () => {
               {loading ? (
                 <>
                   <span className="upload-card-loading-spinner"></span>
-                  Uploading...
+                  Subiendo...
                 </>
               ) : (
                 <>
@@ -255,7 +249,7 @@ const UploadCardPage: React.FC = () => {
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
                   </svg>
-                  Upload Card
+                  Subir Carta
                 </>
               )}
             </button>
