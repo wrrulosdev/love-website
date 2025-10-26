@@ -11,8 +11,6 @@ async function fetchCards(
     signal,
   });
 
-  console.log(data);
-
   if (data && data.status === 'success' && data.data && Array.isArray(data.data.cards)) {
     return data.data.cards;
   }
