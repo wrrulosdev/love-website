@@ -57,7 +57,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const reqId = api.interceptors.request.use((cfg) => {
       const token = accessToken ?? localStorage.getItem(ACCESS_TOKEN_KEY);
-      if (token) cfg.headers = { ...(cfg.headers ?? {}), Authorization: `Bearer ${token}` };
+
+      if (token) {
+        cfg.headers!['Authorization'] = `Bearer ${token}`;
+      }
+
       return cfg;
     });
 
