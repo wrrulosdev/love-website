@@ -53,9 +53,25 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.book-side .book-imagecard {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.book-side .book-imagecard::-webkit-scrollbar {
+  width: 6px;
+}
+
+.book-side .book-imagecard::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.book-side .book-imagecard::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .book-side::after {

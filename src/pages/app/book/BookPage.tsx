@@ -106,7 +106,6 @@ const BookPage: React.FC = () => {
           }
         }
 
-        // Unlock animation after transition
         setTimeout(() => setIsAnimating(false), 300);
       }, 50);
     },
@@ -222,10 +221,10 @@ const BookPage: React.FC = () => {
       {!loading && !error && photos.length === 0 ? (
         <div className="default-empty-state">
           <BookIcon size={64} />
-          <h3>No images available</h3>
-          <p>The storybook of this universe hasn't been written yet.</p>
+          <h3>No hay imágenes disponibles</h3>
+          <p>El libro de este universo aún no ha sido escrito.</p>
           <button className="default-retry-button" onClick={() => refetch().catch(() => {})}>
-            Retry
+            Reintentar
           </button>
         </div>
       ) : (
@@ -257,22 +256,22 @@ const BookPage: React.FC = () => {
               <button
                 className="text-nav-button prev"
                 onClick={prevImage}
-                aria-label="Previous page"
+                aria-label="Página anterior"
                 disabled={isAnimating}
               >
-                &lt; Previous Page
+                &lt; Página anterior
               </button>
               <button
                 className="text-nav-button next"
                 onClick={nextImage}
-                aria-label="Next page"
+                aria-label="Página siguiente"
                 disabled={isAnimating}
               >
-                Next Page &gt;
+                Página siguiente &gt;
               </button>
             </div>
 
-            <div className="pagination-dots" ref={dotsRef} role="list" aria-label="Pagination">
+            <div className="pagination-dots" ref={dotsRef} role="list" aria-label="Paginación">
               {Array.from({ length: endDot - startDot }).map((_, i) => {
                 const dotIndex = startDot + i;
 
@@ -283,7 +282,10 @@ const BookPage: React.FC = () => {
                       key={dotIndex}
                       className={`dot ${isActive ? 'active' : ''}`}
                       onClick={() => !isAnimating && setCurrentIndex(dotIndex * 2)}
-                      aria-label={`Go to pages ${dotIndex * 2 + 1} and ${Math.min(total, dotIndex * 2 + 2)}`}
+                      aria-label={`Ir a las páginas ${dotIndex * 2 + 1} y ${Math.min(
+                        total,
+                        dotIndex * 2 + 2
+                      )}`}
                       role="listitem"
                       disabled={isAnimating}
                     />
@@ -297,7 +299,7 @@ const BookPage: React.FC = () => {
                     key={dotIndex}
                     className={`dot ${isActive ? 'active' : ''}`}
                     onClick={() => !isAnimating && setCurrentIndex(dotIndex)}
-                    aria-label={`Go to page ${dotIndex + 1}`}
+                    aria-label={`Ir a la página ${dotIndex + 1}`}
                     role="listitem"
                     disabled={isAnimating}
                   />
@@ -306,7 +308,9 @@ const BookPage: React.FC = () => {
             </div>
 
             <div className="book-caption">
-              <em>"Each page of our book tells a love story that grows day by day."</em>
+              <em>
+                "Cada página de nuestro libro cuenta una historia de amor que crece día a día."
+              </em>
             </div>
           </div>
         </>

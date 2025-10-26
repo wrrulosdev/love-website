@@ -38,7 +38,7 @@ const GalleryFilters = ({
       onBlur={() => setTimeout(() => setOpen(false), 120)}
       aria-controls="filters-list"
     >
-      Filters <span className="galery-page-chev">▾</span>
+      Filtros <span className="galery-page-chev">▾</span>
     </button>
 
     <ul

@@ -59,18 +59,10 @@ const EditImagesPage: React.FC = () => {
       setLoading(true);
       setError(null);
       const data = await fetchPhotosApi();
-
-      const repeated = Array.from({ length: 1000 }, (_, i) => ({
-        ...data[0],
-        id: `fake-${i}`,
-        title: `${data[0].title || 'Image'} ${i + 1}`,
-      }));
-
-      setImages(repeated);
-      setModalImages(repeated);
-      modalImagesRef.current = repeated;
+      setImages(data);
+      setModalImages(data);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to load images');
+      setError(err instanceof Error ? err.message : 'Error al cargar las imágenes');
     } finally {
       setLoading(false);
     }
