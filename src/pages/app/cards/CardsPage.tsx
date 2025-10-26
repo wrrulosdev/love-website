@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MailIcon, XIcon, CalendarIcon, UserIcon, ArrowRight } from 'lucide-react';
+import { MailIcon, XIcon, CalendarIcon, UserIcon } from 'lucide-react';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { useCards } from '../../../hooks/useCards';
@@ -65,7 +65,7 @@ const CardsPage: React.FC = () => {
     <section className="cards-page">
       <main className="cards-page-main">
         <div className="cards-page-container">
-          {!loading && !error && photos.length === 0 ? (
+          {!loading && !error && cards.length === 0 ? (
             <div className="default-empty-state">
               <MailIcon size={64} />
               <h3>No hay cartas disponibles</h3>
@@ -112,7 +112,17 @@ const CardsPage: React.FC = () => {
 
                   <div className="cards-page-card-footer">
                     <span className="cards-page-card-read">Leer carta completa</span>
-                    <ArrowRight size={20} />
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                   </div>
                 </article>
               ))}
