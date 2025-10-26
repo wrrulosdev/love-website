@@ -467,7 +467,7 @@ const EditCardPage: React.FC = () => {
                       </div>
                       <div className="edit-card-modal-info">
                         <h3>{card.title || 'Sin título'}</h3>
-                        <p className="edit-card-modal-content">
+                        <p className="edit-card-modal-text">
                           {card.content && card.content.length > 80
                             ? `${card.content.substring(0, 80)}...`
                             : card.content || 'Sin contenido'}

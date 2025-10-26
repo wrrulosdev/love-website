@@ -80,7 +80,7 @@
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
 }
 
 .edit-card-empty-state p {
@@ -133,7 +133,7 @@
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
 }
 
 .edit-card-change-button {
@@ -387,7 +387,7 @@
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
 }
 
 .edit-card-modal-close {
@@ -556,6 +556,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  color: var(--muted);
 }
 
 .edit-card-modal-overlay-info {
@@ -591,13 +592,13 @@
   margin: 0;
   font-size: 0.938rem;
   font-weight: 600;
-  color: white;
+  color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.edit-card-modal-content {
+.edit-card-modal-text {
   margin: 0;
   font-size: 0.813rem;
   color: var(--muted);
@@ -793,10 +794,6 @@
     font-size: 1rem;
   }
 
-  .edit-card-modal-content {
-    font-size: 0.875rem;
-  }
-
   .edit-card-modal-date {
     font-size: 0.813rem;
   }
@@ -835,10 +832,6 @@
 
   .edit-card-actions {
     gap: 1.5rem;
-  }
-
-  .edit-card-modal-content {
-    border-radius: 1.25rem;
   }
 
   .edit-card-modal-header h2 {
