@@ -10,7 +10,6 @@ const CardsPage: React.FC = () => {
   const { show, hide } = useLoading();
   const { cards, loading, error, refetch } = useCards();
   const [selectedcard, setSelectedcard] = useState<Card | null>(null);
-  const photos = [1];
 
   /**
    * Toggles the loading spinner when the cards are being fetched.
