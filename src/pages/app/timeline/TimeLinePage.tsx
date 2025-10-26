@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './TimelinePage.css';
+import './TimeLinePage.css';
 import { usePhotos } from '../../../hooks/usePhotos';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
