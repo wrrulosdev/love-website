@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { EditIcon, ImageIcon } from 'lucide-react';
+import { EditIcon, ImageIcon, ArrowLeft, AlertCircle, CheckCircle, Upload } from 'lucide-react';
 import { uploadImageApi } from '../../../services/photosApi';
 import './UploadImagesPage.css';
 import './AdminSubPage.css';
@@ -24,11 +24,7 @@ const UploadImagesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  /**
-   * Handles image file selection and validates its type and size.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} e - File input change event
-   */
+  /** Handles image selection and validation */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -48,19 +44,12 @@ const UploadImagesPage: React.FC = () => {
       setError(null);
 
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
+      reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  /**
-   * Handles the image upload form submission.
-   * Validates inputs and sends the data to the upload API endpoint.
-   *
-   * @param {React.FormEvent} e - Form submit event
-   */
+  /** Handles the upload form submission */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -110,29 +99,14 @@ const UploadImagesPage: React.FC = () => {
     }
   };
 
-  /**
-   * Navigates back to the admin dashboard.
-   */
-  const handleBack = () => {
-    navigate('/admin');
-  };
+  const handleBack = () => navigate('/admin');
 
   return (
     <section className="upload-images-page">
       <header className="admin-header">
         <div className="admin-header-content">
           <button onClick={handleBack}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
+            <ArrowLeft size={20} />
             <span>Volver</span>
           </button>
           <div>
@@ -267,34 +241,14 @@ const UploadImagesPage: React.FC = () => {
 
             {error && (
               <div className="upload-images-message upload-images-error-message">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
+                <AlertCircle size={20} />
                 <span>{error}</span>
               </div>
             )}
 
             {success && (
               <div className="upload-images-message upload-images-success-message">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+                <CheckCircle size={20} />
                 <span>¡Imagen subida exitosamente!</span>
               </div>
             )}
@@ -312,18 +266,7 @@ const UploadImagesPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                  </svg>
+                  <Upload size={20} />
                   Subir Imagen
                 </>
               )}

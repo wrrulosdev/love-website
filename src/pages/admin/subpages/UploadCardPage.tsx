@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './UploadCardPage.css';
 import './AdminSubPage.css';
 import { uploadCardApi } from '../../../services/cardsApi';
+import { ArrowLeft, AlertCircle, CheckCircle, Upload } from 'lucide-react';
 
 const UploadCardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,9 +20,6 @@ const UploadCardPage: React.FC = () => {
 
   /**
    * Handles form submission for uploading a new card.
-   * Performs field validation and sends data to the API.
-   *
-   * @param {React.FormEvent} e - Form submission event
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,14 +54,13 @@ const UploadCardPage: React.FC = () => {
     setSuccess(false);
 
     try {
-      const formData = new FormData();
-      formData.append('image_url', imageUrl.trim());
-      formData.append('title', title.trim());
-      formData.append('content', content.trim());
-      formData.append('card_date', cardDate);
-      formData.append('author', author.trim());
-
-      const response = await uploadCardApi(formData);
+      const response = await uploadCardApi({
+        title: title.trim(),
+        content: content.trim(),
+        image_url: imageUrl.trim(),
+        card_date: cardDate.trim(),
+        author: author.trim(),
+      });
 
       setSuccess(true);
       setTitle('');
@@ -82,9 +79,6 @@ const UploadCardPage: React.FC = () => {
     }
   };
 
-  /**
-   * Navigates back to the admin dashboard.
-   */
   const handleBack = () => {
     navigate('/admin');
   };
@@ -94,17 +88,7 @@ const UploadCardPage: React.FC = () => {
       <header className="admin-header">
         <div className="admin-header-content">
           <button onClick={handleBack}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
+            <ArrowLeft size={20} />
             <span>Volver</span>
           </button>
           <div>
@@ -185,34 +169,14 @@ const UploadCardPage: React.FC = () => {
 
             {error && (
               <div className="upload-card-message upload-card-error-message">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
+                <AlertCircle size={20} />
                 <span>{error}</span>
               </div>
             )}
 
             {success && (
               <div className="upload-card-message upload-card-success-message">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+                <CheckCircle size={20} />
                 <span>¡Carta subida exitosamente!</span>
               </div>
             )}
@@ -237,18 +201,7 @@ const UploadCardPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                  </svg>
+                  <Upload size={20} />
                   Subir Carta
                 </>
               )}

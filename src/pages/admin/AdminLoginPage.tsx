@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './AdminLoginPage.css';
-import { HeartIcon, LockIcon, UserIcon } from 'lucide-react';
+import { HeartIcon, LockIcon, UserIcon, LogInIcon, AlertCircleIcon } from 'lucide-react';
 
 const AdminLoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -21,7 +21,6 @@ const AdminLoginPage: React.FC = () => {
     try {
       await auth.login(username, password);
       navigate('/admin');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const msg = err?.response?.data?.detail ?? err?.message ?? 'Error al iniciar sesión';
       setError(String(msg));
@@ -45,7 +44,7 @@ const AdminLoginPage: React.FC = () => {
           <div className="form-group">
             <label htmlFor="username">Usuario</label>
             <div className="input-wrapper">
-              <UserIcon className="input-icon" />
+              <UserIcon className="input-icon" size={20} />
               <input
                 id="username"
                 type="text"
@@ -60,7 +59,7 @@ const AdminLoginPage: React.FC = () => {
           <div className="form-group">
             <label htmlFor="password">Contraseña</label>
             <div className="input-wrapper">
-              <LockIcon className="input-icon" />
+              <LockIcon className="input-icon" size={20} />
               <input
                 id="password"
                 type="password"
@@ -74,18 +73,7 @@ const AdminLoginPage: React.FC = () => {
 
           {error && (
             <div className="error-message">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
+              <AlertCircleIcon size={16} />
               <span>{error}</span>
             </div>
           )}
@@ -98,18 +86,7 @@ const AdminLoginPage: React.FC = () => {
               </>
             ) : (
               <>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                  <polyline points="10 17 15 12 10 7"></polyline>
-                  <line x1="15" y1="12" x2="3" y2="12"></line>
-                </svg>
+                <LogInIcon size={20} />
                 Iniciar Sesión
               </>
             )}

@@ -16,6 +16,7 @@ import LayoutNoNavbar from './layout/LayoutNoNavbar';
 import TimelinePage from './pages/app/timeline/TimeLinePage';
 import CardsPage from './pages/app/cards/CardsPage';
 import UploadCardPage from './pages/admin/subpages/UploadCardPage';
+import EditCardPage from './pages/admin/subpages/EditCardPage';
 
 const router = createBrowserRouter([
   {
@@ -119,6 +120,15 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [{ index: true, element: <UploadCardPage /> }],
+  },
+  {
+    path: '/admin/edit-card',
+    element: (
+      <ProtectedRoute>
+        <LayoutNoNavbar />
+      </ProtectedRoute>
+    ),
+    children: [{ index: true, element: <EditCardPage /> }],
   },
 ]);
 

@@ -2,7 +2,17 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './EditImagesPage.css';
 import './AdminSubPage.css';
-import { Trash2Icon, SaveIcon, XIcon, ImageIcon } from 'lucide-react';
+import {
+  Trash2Icon,
+  SaveIcon,
+  XIcon,
+  ImageIcon,
+  ArrowLeft,
+  AlertCircle,
+  Check,
+  Calendar,
+  Book,
+} from 'lucide-react';
 import type { Photo } from '../../../interfaces/api';
 import { fetchPhotosApi, updatePhotoApi, deletePhotoApi } from '../../../services/photosApi';
 
@@ -267,17 +277,7 @@ const EditImagesPage: React.FC = () => {
       <header className="admin-header">
         <div className="admin-header-content">
           <button onClick={handleBack}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
+            <ArrowLeft size={20} />
             <span>Volver</span>
           </button>
           <div>
@@ -296,18 +296,7 @@ const EditImagesPage: React.FC = () => {
             </div>
           ) : error ? (
             <div className="edit-images-error-state">
-              <svg
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
+              <AlertCircle size={64} />
               <p>{error}</p>
               <button onClick={loadImages} className="edit-images-retry-button">
                 Reintentar
@@ -440,34 +429,14 @@ const EditImagesPage: React.FC = () => {
 
                   {actionError && (
                     <div className="edit-images-message edit-images-error-message">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                      </svg>
+                      <AlertCircle size={20} />
                       <span>{actionError}</span>
                     </div>
                   )}
 
                   {success && (
                     <div className="edit-images-message edit-images-success-message">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
+                      <Check size={20} />
                       <span>¡Imagen actualizada exitosamente!</span>
                     </div>
                   )}
@@ -545,7 +514,7 @@ const EditImagesPage: React.FC = () => {
                   onClick={() => setModalSearch('')}
                   aria-label="Limpiar búsqueda"
                 >
-                  ×
+                  <XIcon size={16} />
                 </button>
               )}
               <span className="edit-images-modal-meta">
@@ -570,10 +539,8 @@ const EditImagesPage: React.FC = () => {
                         <img src={image.image_url} alt={image.title || `Imagen ${image.id}`} />
                         <div className="edit-images-modal-overlay-info">
                           <span className="edit-images-modal-category">{image.category}</span>
-                          {image.in_book && <span className="edit-images-modal-book">📖</span>}
-                          {image.in_timeline && (
-                            <span className="edit-images-modal-timeline">📅</span>
-                          )}
+                          {image.in_book && <Book size={14} />}
+                          {image.in_timeline && <Calendar size={14} />}
                         </div>
                       </div>
                       <div className="edit-images-modal-info">
