@@ -125,6 +125,33 @@
   font-size: 14px;
 }
 
+.galery-page-sort-btn {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.03);
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease;
+  height: 40px;
+}
+
+.galery-page-sort-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.05);
+}
+
+.galery-page-sort-label {
+  font-size: 13px;
+  color: #111827;
+}
+
 .galery-page-grid {
   width: 100%;
   max-width: 1200px;

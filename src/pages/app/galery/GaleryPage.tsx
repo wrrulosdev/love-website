@@ -7,7 +7,7 @@ import PhotoItem from './PhotoItem';
 import type { Photo } from '../../../interfaces/api';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
-import { ImagesIcon } from 'lucide-react';
+import { ImagesIcon, ArrowUp, ArrowDown } from 'lucide-react';
 
 // Filter categories for gallery
 const FILTERS: FilterOption[] = ['Todas', 'Citas', 'Viajes', 'Casual'];
@@ -80,18 +80,50 @@ const GaleryPage: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Photo | null>(null);
   const { gridRef, endIndex, visibleSet, markVisible } = useVirtualGrid();
+  const [sortAsc, setSortAsc] = useState<boolean>(false);
 
   /**
    * Filter photos by category.
    * If category is "Todas" or source is 'book', show all photos.
    */
-  const filtered = useMemo(
+  const baseFiltered = useMemo(
     () =>
       category === 'Todas' || source === 'book'
         ? photos
         : photos.filter((p) => p.category?.toLowerCase() === category.toLowerCase()),
     [category, photos, source]
   );
+
+  /**
+   * Sort the filtered results by date according to sortAsc.
+   * We try several common date fields (date, created_at, taken_at, createdAt, timestamp).
+   * If no date is parseable we fall back to 0 so those items appear first/last consistently.
+   */
+  const filtered = useMemo(() => {
+    const getTime = (p: Photo): number => {
+      const candidate =
+        (p as Partial<Record<string, unknown>>).date ??
+        (p as Partial<Record<string, unknown>>).created_at ??
+        (p as Partial<Record<string, unknown>>).taken_at ??
+        (p as Partial<Record<string, unknown>>).createdAt ??
+        (p as Partial<Record<string, unknown>>).timestamp ??
+        (p as Partial<Record<string, unknown>>).time ??
+        null;
+
+      if (candidate == null) return 0;
+      if (typeof candidate === 'number') return candidate;
+      const parsed = Date.parse(String(candidate));
+      return isNaN(parsed) ? 0 : parsed;
+    };
+
+    const arr = [...baseFiltered];
+    arr.sort((a, b) => {
+      const ta = getTime(a);
+      const tb = getTime(b);
+      return sortAsc ? ta - tb : tb - ta;
+    });
+    return arr;
+  }, [baseFiltered, sortAsc]);
 
   /**
    * Show or hide the global loader when photos are loading
@@ -200,6 +232,24 @@ const GaleryPage: React.FC = () => {
             setOpen={setOpen}
             gridRef={gridRef}
           />
+
+          <button
+            type="button"
+            className="galery-page-sort-btn"
+            onClick={() => {
+              setSortAsc((s) => !s);
+              if (gridRef.current) gridRef.current.scrollTop = 0;
+            }}
+            aria-pressed={!sortAsc}
+            aria-label={
+              sortAsc
+                ? 'Orden actual: viejas a nuevas. Cambiar a nuevas a viejas'
+                : 'Orden actual: nuevas a viejas. Cambiar a viejas a nuevas'
+            }
+            title={sortAsc ? 'Viejas → Nuevas' : 'Nuevas → Viejas'}
+          >
+            {sortAsc ? <ArrowDown size={18} /> : <ArrowUp size={18} />}
+          </button>
         </div>
         <span className="galery-page-filter-status" id="galery-title">
           {category === 'Todas'
