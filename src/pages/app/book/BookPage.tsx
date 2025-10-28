@@ -17,6 +17,30 @@ const BookPage: React.FC = () => {
   const dotsRef = useRef<HTMLDivElement | null>(null);
 
   /**
+   * Sort photos by date (oldest to newest).
+   */
+  const sortedPhotos = useMemo(() => {
+    const getTime = (p: Photo): number => {
+      const anyP = p as Record<string, unknown>;
+      const candidate =
+        anyP.date ??
+        anyP.created_at ??
+        anyP.taken_at ??
+        anyP.createdAt ??
+        anyP.timestamp ??
+        anyP.time ??
+        null;
+
+      if (candidate == null) return 0;
+      if (typeof candidate === 'number') return candidate;
+      const parsed = Date.parse(String(candidate));
+      return isNaN(parsed) ? 0 : parsed;
+    };
+
+    return [...photos].sort((a, b) => getTime(a) - getTime(b));
+  }, [photos]);
+
+  /**
    * Displays or hides the global loading overlay depending on the photo fetch state.
    */
   useEffect(() => {
@@ -39,7 +63,7 @@ const BookPage: React.FC = () => {
     return () => mq.removeEventListener?.('change', onChange);
   }, []);
 
-  const total = photos.length;
+  const total = sortedPhotos.length;
 
   /**
    * Calculates the left page index for the current spread.
@@ -178,7 +202,7 @@ const BookPage: React.FC = () => {
    * Maps the current left photo to the `ImageCard` props format.
    */
   const currentLeftCard: ImageCardProps | null = useMemo(() => {
-    const p: Photo | undefined = photos[leftIndex];
+    const p: Photo | undefined = sortedPhotos[leftIndex];
     if (!p) return null;
     return {
       imageUrl: p.image_url,
@@ -186,14 +210,14 @@ const BookPage: React.FC = () => {
       description: p.description ?? undefined,
       date: p.date ?? undefined,
     };
-  }, [photos, leftIndex]);
+  }, [sortedPhotos, leftIndex]);
 
   /**
    * Maps the current right photo (if any) to the `ImageCard` props format.
    */
   const currentRightCard: ImageCardProps | null = useMemo(() => {
     if (rightIndex === null) return null;
-    const p: Photo | undefined = photos[rightIndex];
+    const p: Photo | undefined = sortedPhotos[rightIndex];
     if (!p) return null;
     return {
       imageUrl: p.image_url,
@@ -201,7 +225,7 @@ const BookPage: React.FC = () => {
       description: p.description ?? undefined,
       date: p.date ?? undefined,
     };
-  }, [photos, rightIndex]);
+  }, [sortedPhotos, rightIndex]);
 
   // Render error state if API fails
   if (error) {
@@ -216,9 +240,9 @@ const BookPage: React.FC = () => {
 
   return (
     <section
-      className={`book-page ${loading ? 'hidden' : ''} ${photos.length === 0 ? 'no-content' : ''}`}
+      className={`book-page ${loading ? 'hidden' : ''} ${sortedPhotos.length === 0 ? 'no-content' : ''}`}
     >
-      {!loading && !error && photos.length === 0 ? (
+      {!loading && !error && sortedPhotos.length === 0 ? (
         <div className="default-empty-state">
           <BookIcon size={64} />
           <h3>No hay imágenes disponibles</h3>
