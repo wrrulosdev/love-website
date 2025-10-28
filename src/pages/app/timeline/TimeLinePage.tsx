@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './TimeLinePage.css';
 import { usePhotos } from '../../../hooks/usePhotos';
 import { useLoading } from '../../../context/LoadingContext';
@@ -18,6 +18,50 @@ const TimelinePage: React.FC = () => {
       hide();
     }
   }, [loading, show, hide]);
+
+  /**
+   * Extracts a valid timestamp number from various possible date fields in a Photo object.
+   * Supports formats like ISO, YYYY-MM-DD, DD/MM/YYYY, and numeric timestamps.
+   * Returns 0 if no valid date is found to ensure consistent sorting.
+   */
+  const getTime = (p: Photo): number => {
+    const candidate =
+      (p as Record<string, unknown>).date ??
+      (p as Record<string, unknown>).created_at ??
+      (p as Record<string, unknown>).taken_at ??
+      (p as Record<string, unknown>).createdAt ??
+      (p as Record<string, unknown>).timestamp ??
+      (p as Record<string, unknown>).time ??
+      null;
+
+    if (candidate == null) return 0;
+
+    if (typeof candidate === 'number') return candidate;
+
+    const value = String(candidate).trim();
+
+    // Handle DD/MM/YYYY format
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+      const [day, month, year] = value.split('/').map(Number);
+      return new Date(year, month - 1, day).getTime();
+    }
+
+    // Handle ISO or YYYY-MM-DD
+    const parsed = Date.parse(value);
+    if (!isNaN(parsed)) return parsed;
+
+    return 0;
+  };
+
+  /**
+   * Sort the photos chronologically from oldest to newest.
+   * This ensures the timeline displays events in correct historical order.
+   */
+  const sortedPhotos = useMemo(() => {
+    const arr = [...photos];
+    arr.sort((a, b) => getTime(a) - getTime(b));
+    return arr;
+  }, [photos]);
 
   /**
    * Opens the lightbox with the selected image.
@@ -48,7 +92,7 @@ const TimelinePage: React.FC = () => {
 
   return (
     <section className="timeline-page">
-      {!loading && !error && photos.length === 0 ? (
+      {!loading && !error && sortedPhotos.length === 0 ? (
         <div className="default-empty-state">
           <ImagesIcon size={64} />
           <h3>No hay imágenes disponibles</h3>
@@ -60,7 +104,7 @@ const TimelinePage: React.FC = () => {
       ) : (
         <div className="timeline-container">
           <div className="timeline">
-            {photos.map((event: Photo, index: number) => (
+            {sortedPhotos.map((event: Photo, index: number) => (
               <div
                 key={event.id}
                 className={`timeline-event ${
