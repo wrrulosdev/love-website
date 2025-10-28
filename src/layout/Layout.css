@@ -1,16 +1,3 @@
-:root {
-  --bg-1: #fbf8ff;
-  --bg-2: #f3f0ff;
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(124, 77, 255, 0.12);
-  --accent: #7c4dff;
-  --accent-2: #9a79ff;
-  --text: #1e0f3a;
-  --muted: #63558e;
-  --muted-2: #927fbd;
-  --shadow: rgba(124, 77, 255, 0.12);
-}
-
 .app-layout {
   min-height: 100vh;
   position: relative;
