@@ -45,7 +45,7 @@ const BookPage: React.FC = () => {
    */
   useEffect(() => {
     if (loading) {
-      show('Loading photos...');
+      show('Cargando fotos...');
     } else {
       hide();
     }

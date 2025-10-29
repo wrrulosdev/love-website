@@ -96,8 +96,6 @@ const GaleryPage: React.FC = () => {
 
   /**
    * Sort the filtered results by date according to sortAsc.
-   * We try several common date fields (date, created_at, taken_at, createdAt, timestamp).
-   * If no date is parseable we fall back to 0 so those items appear first/last consistently.
    */
   const filtered = useMemo(() => {
     const getTime = (p: Photo): number => {
@@ -129,7 +127,7 @@ const GaleryPage: React.FC = () => {
    * Show or hide the global loader when photos are loading
    */
   useEffect(() => {
-    if (loading) show('Loading photos...');
+    if (loading) show('Cargando fotos...');
     else hide();
   }, [loading, show, hide]);
 
