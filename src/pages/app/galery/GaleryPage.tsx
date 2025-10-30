@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import './GaleryPage.css';
-import type { FilterOption } from '../../../interfaces/photo';
+import { filterOptions, type FilterOption } from '../../../interfaces/photo';
 import { useVirtualGrid } from '../../../hooks/useVirtualGrid';
 import { usePhotos } from '../../../hooks/usePhotos';
 import PhotoItem from './PhotoItem';
@@ -8,9 +8,6 @@ import type { Photo } from '../../../interfaces/api';
 import { useLoading } from '../../../context/LoadingContext';
 import ApiErrorState from '../../../components/errorstate/ApiErrorState';
 import { ImagesIcon, ArrowUp, ArrowDown } from 'lucide-react';
-
-// Filter categories for gallery
-const FILTERS: FilterOption[] = ['Todas', 'Citas', 'Viajes', 'Casual'];
 
 /**
  * Dropdown component for gallery filters.
@@ -47,7 +44,7 @@ const GalleryFilters = ({
       aria-label="Gallery filters"
       className={`galery-page-filters ${open ? 'galery-page-filters-open' : ''}`}
     >
-      {FILTERS.map((f) => (
+      {filterOptions.map((f) => (
         <li key={f}>
           <button
             className={`galery-page-filter-option ${category === f ? 'galery-page-filter-option-active' : ''}`}

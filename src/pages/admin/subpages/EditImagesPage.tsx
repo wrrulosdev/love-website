@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import type { Photo } from '../../../interfaces/api';
 import { fetchPhotosApi, updatePhotoApi, deletePhotoApi } from '../../../services/photosApi';
+import { filterOptions } from '../../../interfaces/photo';
 
 const EditImagesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -376,9 +377,9 @@ const EditImagesPage: React.FC = () => {
                         disabled={saving || deleting}
                       >
                         <option value="">Selecciona una categoría</option>
-                        <option value="Citas">Citas</option>
-                        <option value="Viajes">Viajes</option>
-                        <option value="Casual">Casual</option>
+                        {filterOptions.map((filterOption) => (
+                          <option value={filterOption}>{filterOption}</option>
+                        ))}
                       </select>
                     </div>
 

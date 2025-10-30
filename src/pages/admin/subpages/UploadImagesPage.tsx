@@ -4,6 +4,7 @@ import { EditIcon, ImageIcon, ArrowLeft, AlertCircle, CheckCircle, Upload } from
 import { uploadImageApi } from '../../../services/photosApi';
 import './UploadImagesPage.css';
 import './AdminSubPage.css';
+import { filterOptions } from '../../../interfaces/photo';
 
 const UploadImagesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -193,9 +194,9 @@ const UploadImagesPage: React.FC = () => {
                   disabled={loading}
                 >
                   <option value="">Selecciona una categoría</option>
-                  <option value="Citas">Citas</option>
-                  <option value="Viajes">Viajes</option>
-                  <option value="Casual">Casual</option>
+                  {filterOptions.map((filterOption) => (
+                    <option value={filterOption}>{filterOption}</option>
+                  ))}
                 </select>
               </div>
 
