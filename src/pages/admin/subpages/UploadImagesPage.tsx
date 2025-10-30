@@ -138,7 +138,7 @@ const UploadImagesPage: React.FC = () => {
                     <div className="upload-images-placeholder">
                       <ImageIcon size={48} />
                       <span>Selecciona una imagen</span>
-                      <span className="upload-images-hint">JPG, PNG o GIF - Máx 10MB</span>
+                      <span className="upload-images-hint">JPG, PNG o GIF - Máx 50MB</span>
                     </div>
                   )}
                 </div>
